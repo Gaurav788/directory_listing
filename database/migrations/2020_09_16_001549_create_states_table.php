@@ -18,7 +18,6 @@ class CreateStatesTable extends Migration
 				$table->bigIncrements('id');
 				$table->unsignedBigInteger('country_id');
 				$table->string('name');
-				$table->integer('short_code');
 				$table->tinyInteger('status');
 				$table->timestamps();
 				$table->foreign('country_id')->references('id')->on('countries');
