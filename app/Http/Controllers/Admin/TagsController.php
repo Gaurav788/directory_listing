@@ -66,6 +66,11 @@ class TagsController extends Controller
 
 
     public function create_record(Request $request){
+		$request->validate([
+                'name' => 'required|unique:tags',
+            ], [
+                'name.required' => 'Name is required',
+            ]);
     	DB::beginTransaction();
     	try {
         	$postData = $request->all();
@@ -91,17 +96,22 @@ class TagsController extends Controller
 
     public function edit_form($id){
     	$record = Tag::find($id);
-    	return view('admin.tag.edit', compact('record'));
+    	return view('admin.tags.edit', compact('record'));
     }
 
     public function update_record(Request $request){
+        $postData = $request->all();
+		$id =$postData['edit_record_id'];
+		$request->validate([
+                'name' => 'required|unique:tags,name,'.$id,
+            ], [
+                'name.required' => 'Name is required',
+            ]);
     	DB::beginTransaction();
     	try {
-        	$postData = $request->all();
             //dd($postData);
         	$data = array(
         			'name' => $postData['name'],
-        			'description' => $postData['Description'],
         			'updated_at' => date('Y-m-d H:i:s')
 
         	);

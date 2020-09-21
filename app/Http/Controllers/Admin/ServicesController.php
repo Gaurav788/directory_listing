@@ -66,6 +66,11 @@ class ServicesController extends Controller
 
 
     public function create_record(Request $request){
+		$request->validate([
+                'name' => 'required|unique:services',
+            ], [
+                'name.required' => 'Name is required'
+            ]);
     	DB::beginTransaction();
     	try {
         	$postData = $request->all();
@@ -95,13 +100,18 @@ class ServicesController extends Controller
     }
 
     public function update_record(Request $request){
+        $postData = $request->all();
+		$id =$postData['edit_record_id'];
+		$request->validate([
+                'name' => 'required|unique:services,name,'.$id,
+            ], [
+                'name.required' => 'Name is required',
+            ]);
     	DB::beginTransaction();
     	try {
-        	$postData = $request->all();
             //dd($postData);
         	$data = array(
         			'name' => $postData['name'],
-        			'description' => $postData['Description'],
         			'updated_at' => date('Y-m-d H:i:s')
 
         	);

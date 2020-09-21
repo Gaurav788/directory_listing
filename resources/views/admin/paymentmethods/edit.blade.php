@@ -7,6 +7,16 @@
                             <h4 class="mb-1 mt-0">Payment Methods</h4>
                         </div>
                     </div>
+					<div class="flash-message">
+						@if(session()->has('status'))
+							@if(session()->get('status') == 'error')
+								<div class="alert alert-danger  alert-dismissible">
+							<a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+									{{ session()->get('message') }}
+								</div>
+							@endif
+						@endif
+					</div> <!-- end .flash-message -->
 
                     <div class="row mt-4">
                       <div class="col-md-12">
@@ -23,7 +33,10 @@
 												<div class="col-lg-4 col-md-6 col-12">
 													<div class="form-group">
 														<label>Name<span class="required">*</span></label>
-														<input type="text" name="name" id="name" class="form-control form-control-user" value="{{$record->name}}" required />
+														<input type="text" name="name" id="name" class="form-control form-control-user" value="{{old('name', $record->name)}}" required />
+														@if ($errors->has('name'))
+															<span class="text-danger">{{ $errors->first('name') }}</span>
+														@endif
 													</div>
 												</div>
 											</div>
@@ -31,7 +44,10 @@
 												<div class="col-lg-4 col-md-6 col-12">
 													<div class="form-group">
 														<label>Description<span class="required">*</span></label>
-														<textarea  name="Description" class="form-control form-control-user" required />{{$record->description}}</textarea>
+														<textarea  name="description" class="form-control form-control-user" required />{{old('description', $record->description)}}</textarea>
+														@if ($errors->has('description'))
+															<span class="text-danger">{{ $errors->first('description') }}</span>
+														@endif
 													</div>
 												</div>
 												
@@ -57,3 +73,11 @@
                     <!-- end row -->
                 </div> <!-- container-fluid -->
 @endsection
+@section('scripts')
+    <script src="https://cdn.tiny.cloud/1/g2adjiwgk9zbu2xzir736ppgxzuciishwhkpnplf46rni4g8/tinymce/5/tinymce.min.js" referrerpolicy="origin"></script>
+  <script>
+    tinymce.init({
+      selector: 'textarea'
+    });
+  </script>
+@stop

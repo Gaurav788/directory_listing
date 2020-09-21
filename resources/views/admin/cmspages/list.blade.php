@@ -4,7 +4,7 @@
 
 <div class="container-fluid">
   <div class="d-sm-flex align-items-center justify-content-between mb-4">
-    <h1 class="h3 mb-0 text-gray-800">Membership Plan List</h1>
+    <h1 class="h3 mb-0 text-gray-800">CMS Pages List</h1>
   </div>
 	<div class="flash-message">
 		@if(session()->has('status'))
@@ -20,7 +20,7 @@
           <div class="card shadow mb-4">
             <div class="card-header py-3">
             <div class="buttons-right">
-              <a class="m-0 font-weight-bold btn-department-add pull-right hover-white" href="{{route('membershipplan.add')}}">Add Membership Plan</a>
+              <a class="m-0 font-weight-bold btn-department-add pull-right hover-white" href="{{route('cmspage.add')}}">Add CMS Page</a>
             </div>
             </div>
             <div class="card-body">
@@ -30,11 +30,10 @@
 
                         <tr>
                             <th>S.No</th>
-                            <th>Name</th>
-                            <th>Details</th>
-                            <th>Price</th>
-                            <th>Currency</th>
-                            <th>Duration</th>
+                            <th>Title</th>
+                            <th>Description</th>
+                            <th>Meta Title</th>
+                            <th>Meta Keyword</th>
                             <th>Status</th>
                             <th>Date</th>
                             <th>Action</th>  
@@ -42,26 +41,25 @@
                     </thead>
                     <tbody>
                       <?php $i=1; ?>
-                        @forelse($plans as $row)
+                        @forelse($cmspages as $row)
                         <tr>
                             <td>{{$i}}</td>
-                            <td>{{$row->name}}</td>
-                            <td>{{$row->details}}</td>
-                            <td>{{$row->price}}</td>
-                            <td>{{$row->currency}}</td>
-                            <td>{{$row->duration}}</td>
+                            <td>{{$row->title}}</td>
+                            <td>{{$row->description}}</td>
+                            <td>{{$row->meta_title}}</td>
+                            <td>{{$row->meta_keyword}}</td>
                             <td>
 							@if($row->status == 0)
-								<a title="Click to Enable" href="{{route('membershipplan.status', ['g' => $row->id, 's' => 1])}}" class="tableLink"><img alt="Click to Enable" src="/assets/images/off.png" /></a> Disabled
+								<a title="Click to Enable" href="{{route('cmspage.status', ['g' => $row->id, 's' => 1])}}" class="tableLink"><img alt="Click to Enable" src="/assets/images/off.png" /></a> Disabled
 							@else
-								<a title="Click to Disable" href="{{route('membershipplan.status', ['g' => $row->id, 's' => 0])}}" class="tableLink"><img title="Click to Disable" src="/assets/images/on.png" /></a> Enabled
+								<a title="Click to Disable" href="{{route('cmspage.status', ['g' => $row->id, 's' => 0])}}" class="tableLink"><img title="Click to Disable" src="/assets/images/on.png" /></a> Enabled
 							@endif
 							</td>
                             <td>{{$row->created_at}}</td>
                             <td>
                             <a class="anchorLess">
-                               <a title="Click to Edit" href="{{route('membershipplan.edit',[$row->id])}}" class="anchorLess"><i class="fas fa-edit info" aria-hidden="true" ></i></a>
-                               <a title="Click to Delete" href="javascript:void(0)" class="anchorLess" onclick="deletemembershipplan(this,'{{$row->id}}');"><i class="fas fa-trash danger" aria-hidden="true" ></i></a>
+                               <a title="Click to Edit" href="{{route('cmspage.edit',[$row->id])}}" class="anchorLess"><i class="fas fa-edit info" aria-hidden="true" ></i></a>
+                               <a title="Click to Delete" href="javascript:void(0)" class="anchorLess" onclick="deletecmspage(this,'{{$row->id}}');"><i class="fas fa-trash danger" aria-hidden="true" ></i></a>
                             </a>      
                             </td>
                         </tr>
@@ -86,12 +84,12 @@
 
 
 <script type="text/javascript">
-function deletemembershipplan(obj, pid) {
-    var result = confirm("Are you sure you want to delete this membership plan ?");
+function deletecmspage(obj, pid) {
+    var result = confirm("Are you sure you want to delete this page ?");
     if (result) {
         jQuery.ajax({
             method: 'POST',
-            url: '/admin/membershipplan/del',
+            url: '/admin/cmspage/del',
             dataType: 'json',
             data: {
                 'id': pid,

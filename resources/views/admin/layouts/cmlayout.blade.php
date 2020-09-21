@@ -16,7 +16,7 @@
          <!-- Sidebar -->
          <ul class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion" id="accordionSidebar">
             <!-- Sidebar - Brand -->
-            <a class="sidebar-brand d-flex align-items-center justify-content-center" href="/dashboard">
+            <a class="sidebar-brand d-flex align-items-center justify-content-center" href="{{route('admin.dashboard')}}">
                <div class="sidebar-brand-icon ">
                   <img src="{{asset('/backend/images/im-logo.png')}}" class="adminlogo">
                </div>
@@ -76,9 +76,9 @@
             </li>
 			
             <li class="nav-item">
-               <a class="nav-link" href="javascript:void(0);">
+               <a class="nav-link" href="{{route('cmspages.list')}}">
                <i class="fas fa-file"></i>
-               <span>CMS Page Manager</span></a>
+               <span>CMS Pages Manager</span></a>
             </li>       
 
             <li class="nav-item">

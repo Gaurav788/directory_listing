@@ -6,8 +6,6 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Membership_plan;
 use DB;
-use DataTables;
-use Illuminate\Support\Str;
 
 class MembershipPlansController extends Controller
 {
@@ -28,6 +26,19 @@ class MembershipPlansController extends Controller
 
 
     public function create_record(Request $request){
+		$request->validate([
+                'name' => 'required|unique:membership_plans',
+                'details' => 'required|min:5',
+                'price' => 'required|numeric|gte:0',
+                'currency' => 'required',
+                'duration' => 'required'
+            ], [
+                'name.required' => 'Name is required',
+                'details.required' => 'You can not left details empty. Please add someting to describe plan',
+                'price.required' => 'You can not left price empty.',
+                'currency.required' => 'You can not left currency empty.',
+                'duration.required' => 'Please select one duration.'
+            ]);
     	DB::beginTransaction();
     	try {
         	$postData = $request->all();
@@ -61,9 +72,23 @@ class MembershipPlansController extends Controller
     }
 
     public function update_record(Request $request){
+        $postData = $request->all();
+		$id =$postData['edit_record_id'];
+		$request->validate([
+                'name' => 'required|unique:membership_plans,name,'.$id,
+                'details' => 'required|min:5',
+                'price' => 'required|numeric|gte:0',
+                'currency' => 'required',
+                'duration' => 'required'
+            ], [
+                'name.required' => 'Name is required',
+                'details.required' => 'You can not left details empty. Please add someting to describe plan',
+                'price.required' => 'You can not left price empty.',
+                'currency.required' => 'You can not left currency empty.',
+                'duration.required' => 'Please select one duration.'
+            ]);
     	DB::beginTransaction();
     	try {
-        	$postData = $request->all();
             //dd($postData);
         	$data = array(
         			'name' => $postData['name'],

@@ -6,6 +6,15 @@
 	<div class="d-sm-flex align-items-center justify-content-between mb-4">
 		<h1 class="h3 mb-0 text-gray-800">Tags</h1>
 	</div>
+	<div class="flash-message">
+		@if(session()->has('status'))
+			@if(session()->get('status') == 'success')
+				<div class="alert alert-success  alert-dismissible">
+					<a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a> {{ session()->get('message') }}
+				</div>
+			@endif
+		@endif
+	</div> <!-- end .flash-message -->
 	<div class="row">
         <div class="col-xl-12 col-md-12">
 			<div class="card shadow mb-4">

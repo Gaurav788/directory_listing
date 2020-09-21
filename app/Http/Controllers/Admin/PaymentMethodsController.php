@@ -68,13 +68,20 @@ class PaymentMethodsController extends Controller
 
 
     public function create_record(Request $request){
+		$request->validate([
+                'name' => 'required|unique:payment_methods',
+                'description' => 'required|min:5'
+            ], [
+                'name.required' => 'Name is required',
+                'description.required' => 'You can not left description empty. Please add someting to describe payment method'
+            ]);
     	DB::beginTransaction();
     	try {
         	$postData = $request->all();
             //dd($postData); 
         	$data = array(
         			'name' => $postData['name'],
-        			'description' => $postData['Description'],
+        			'description' => $postData['description'],
 					'status' => 1,
         			'created_at' => date('Y-m-d H:i:s')
 
@@ -98,13 +105,21 @@ class PaymentMethodsController extends Controller
     }
 
     public function update_record(Request $request){
+        $postData = $request->all();
+		$id =$postData['edit_record_id'];
+		$request->validate([
+                'name' => 'required|unique:payment_methods,name,'.$id,
+                'description' => 'required|min:5'
+            ], [
+                'name.required' => 'Name is required',
+                'description.required' => 'You can not left description empty. Please add someting to describe payment method'
+            ]);
     	DB::beginTransaction();
     	try {
-        	$postData = $request->all();
             //dd($postData);
         	$data = array(
         			'name' => $postData['name'],
-        			'description' => $postData['Description'],
+        			'description' => $postData['description'],
         			'updated_at' => date('Y-m-d H:i:s')
 
         	);

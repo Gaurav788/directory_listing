@@ -70,7 +70,7 @@ Route::post('admin/paymentmethod/update', 'Admin\PaymentMethodsController@update
 Route::get('admin/paymentmethod/status/update', 'Admin\PaymentMethodsController@change_status')->name('paymentmethod.status')->middleware('auth');
 Route::post('admin/paymentmethod/del', 'Admin\PaymentMethodsController@del_record')->name('paymentmethod.del')->middleware('auth');
 
-//Payment Methods Routes
+//Membership plans Routes
 
 Route::get('admin/membershipplan/list', 'Admin\MembershipPlansController@list_records')->name('membershipplan.list')->middleware('auth');
 Route::get('admin/membershipplan/add', 'Admin\MembershipPlansController@add_form')->name('membershipplan.add')->middleware('auth');
@@ -79,3 +79,13 @@ Route::get('admin/membershipplan/edit/{id}', 'Admin\MembershipPlansController@ed
 Route::post('admin/membershipplan/update', 'Admin\MembershipPlansController@update_record')->name('membershipplan.update')->middleware('auth');
 Route::get('admin/membershipplan/status/update', 'Admin\MembershipPlansController@change_status')->name('membershipplan.status')->middleware('auth');
 Route::post('admin/membershipplan/del', 'Admin\MembershipPlansController@del_record')->name('membershipplan.del')->middleware('auth');
+
+//CMS Pages Routes
+
+Route::get('admin/cmspages/list', 'Admin\CmsPagesController@list_records')->name('cmspages.list')->middleware('auth');
+Route::get('admin/cmspage/add', 'Admin\CmsPagesController@add_form')->name('cmspage.add')->middleware('auth');
+Route::post('admin/cmspage/create', 'Admin\CmsPagesController@create_record')->name('cmspage.create')->middleware('auth');
+Route::get('admin/cmspage/edit/{id}', 'Admin\CmsPagesController@edit_form')->name('cmspage.edit')->middleware('auth');
+Route::post('admin/cmspage/update', 'Admin\CmsPagesController@update_record')->name('cmspage.update')->middleware('auth');
+Route::get('admin/cmspage/status/update', 'Admin\CmsPagesController@change_status')->name('cmspage.status')->middleware('auth');
+Route::post('admin/cmspage/del', 'Admin\CmsPagesController@del_record')->name('cmspage.del')->middleware('auth');

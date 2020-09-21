@@ -1,0 +1,126 @@
+@extends('admin.layouts.cmlayout')
+
+@section('body')
+                <div class="container-fluid">
+                    <div class="row page-title  no-display">
+                        <div class="col-md-12">
+                            <h4 class="mb-1 mt-0">CMS Pages</h4>
+                        </div>
+                    </div>
+					<div class="flash-message">
+						@if(session()->has('status'))
+							@if(session()->get('status') == 'error')
+								<div class="alert alert-danger  alert-dismissible">
+							<a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+									{{ session()->get('message') }}
+								</div>
+							@endif
+						@endif
+					</div> <!-- end .flash-message -->
+
+                    <div class="row mt-4">
+						<div class="col-md-12">
+                            <div class="card">
+                                <div class="card-body pt-2 pb-3 manageClinicSection">
+                                    <h5 class="mt-3 mb-4">
+										Create CMS Page
+										<a href="{{route('cmspages.list')}}" class="float-right"><i data-feather="x"></i></a>					
+									</h5>
+									<form action="{{route('cmspage.create')}}" method="post" class="user" id="add_cmspage_form" enctype="multipart/form-data">
+										@csrf												
+											<div class="row">
+												<div class="col-lg-4 col-md-6 col-12">
+													<div class="form-group">
+														<label>Title<span class="required">*</span></label>
+														<input type="text" name="title" id="title" value="{{old('title')}}" class="form-control form-control-user"  />
+														@if ($errors->has('title'))
+															<span class="text-danger">{{ $errors->first('title') }}</span>
+														@endif
+													</div>
+												</div>
+												<div class="col-lg-4 col-md-6 col-12">
+													<div class="form-group">
+														<label>Slug<span class="required">*</span></label>
+														<input type="text" name="slug" id="slug" value="{{old('slug')}}" class="form-control form-control-user"  />
+														@if ($errors->has('slug'))
+															<span class="text-danger">{{ $errors->first('slug') }}</span>
+														@endif
+													</div>
+												</div>
+											</div>
+											<div class="row">
+												<div class="col-lg-4 col-md-6 col-12">
+													<div class="form-group">
+														<label>Short Description<span class="required">*</span></label>
+														<textarea  name="short_description" class="form-control form-control-user"  /> {{old('short_description')}}</textarea>
+														@if ($errors->has('short_description'))
+															<span class="text-danger">{{ $errors->first('short_description') }}</span>
+														@endif
+													</div>
+												</div>
+												
+											
+												<div class="col-lg-4 col-md-6 col-12">
+													<div class="form-group">
+														<label>Description<span class="required">*</span></label>
+														<textarea  name="description" class="form-control form-control-user"  /> {{old('description')}}</textarea>
+														@if ($errors->has('description'))
+															<span class="text-danger">{{ $errors->first('description') }}</span>
+														@endif
+													</div>
+												</div>
+											</div>									
+											<div class="row">
+												<div class="col-lg-4 col-md-6 col-12">
+													<div class="form-group">
+														<label>Meta Title<span class="required">*</span></label>
+														<input type="text" name="meta_title" id="meta_title" value="{{old('meta_title')}}" class="form-control form-control-user"  />
+														@if ($errors->has('meta_title'))
+															<span class="text-danger">{{ $errors->first('meta_title') }}</span>
+														@endif
+													</div>
+												</div>
+												<div class="col-lg-4 col-md-6 col-12">
+													<div class="form-group">
+														<label>Meta Keyword<span class="required">*</span></label>
+														<input type="text" name="meta_keyword" id="meta_keyword" value="{{old('meta_keyword')}}" class="form-control form-control-user"  />
+														@if ($errors->has('meta_keyword'))
+															<span class="text-danger">{{ $errors->first('meta_keyword') }}</span>
+														@endif
+													</div>
+												</div>
+											</div>									
+											<div class="row">
+												<div class="col-lg-4 col-md-6 col-12">
+													<div class="form-group">
+														<label>Meta Content<span class="required">*</span></label>
+														<input type="text" name="meta_content" id="meta_content" value="{{old('meta_content')}}" class="form-control form-control-user"  />
+														@if ($errors->has('meta_content'))
+															<span class="text-danger">{{ $errors->first('meta_content') }}</span>
+														@endif
+													</div>
+												</div>
+											</div>						
+											<div class="mt-1 mb-1">
+												<div class="text-left d-print-none mt-4">
+													<button type="submit" id="save-cmspage-btn" class="btn btn-primary">Save</button>
+													<a href="{{route('cmspages.list')}}" class="btn btn-light">Cancel</a>
+												</div>
+												
+											</div>
+									</form>
+								</div>                          
+							</div>
+						</div>
+						<!-- end row -->
+					</div> 
+					<!-- container-fluid -->
+@endsection
+@section('scripts')
+    <script src="https://cdn.tiny.cloud/1/g2adjiwgk9zbu2xzir736ppgxzuciishwhkpnplf46rni4g8/tinymce/5/tinymce.min.js" referrerpolicy="origin"></script>
+  <script>
+    tinymce.init({
+      selector: 'textarea'
+    });
+	</script>
+@stop

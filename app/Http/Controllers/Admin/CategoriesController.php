@@ -68,13 +68,20 @@ class CategoriesController extends Controller
 
 
     public function create_record(Request $request){
+		$request->validate([
+                'name' => 'required|unique:categories',
+                'description' => 'required|min:5'
+            ], [
+                'name.required' => 'Name is required',
+                'description.required' => 'You can not left description empty. Please add someting to describe category'
+            ]);
     	DB::beginTransaction();
     	try {
         	$postData = $request->all();
             //dd($postData); 
         	$data = array(
         			'name' => $postData['name'],
-        			'description' => $postData['Description'],
+        			'description' => $postData['description'],
 					'status' => 1,
         			'created_at' => date('Y-m-d H:i:s')
 
@@ -86,7 +93,7 @@ class CategoriesController extends Controller
         	}
         } catch ( \Exception $e ) {
             DB::rollback();
-            dd($e);
+            //dd($e);
             return redirect()->back()->with('status', 'error')->with('message', $e->getMessage());
             //return ['status' => 400, 'message' => $e->getMessage()];
         }
@@ -98,15 +105,22 @@ class CategoriesController extends Controller
     }
 
     public function update_record(Request $request){
+        $postData = $request->all();
+		$id =$postData['edit_record_id'];
+		$request->validate([
+                'name' => 'required|unique:categories,name,'.$id,
+                'description' => 'required|min:5'
+            ], [
+                'name.required' => 'Name is required',
+                'description.required' => 'You can not left description empty. Please add someting to describe category'
+            ]);
     	DB::beginTransaction();
     	try {
-        	$postData = $request->all();
             //dd($postData);
         	$data = array(
-        			'name' => $postData['name'],
-        			'description' => $postData['Description'],
-        			'updated_at' => date('Y-m-d H:i:s')
-
+        		'name' => $postData['name'],
+        		'description' => $postData['description'],
+        		'updated_at' => date('Y-m-d H:i:s')
         	);
         	
 			$record = Category::where('id', $postData['edit_record_id'])->update($data);
