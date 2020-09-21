@@ -28,6 +28,24 @@ class LoginController extends Controller
      * @var string
      */
     protected $redirectTo;
+    public function redirectTo()
+    {
+        switch(Auth::user()->role_id){
+            case 2:
+            $this->redirectTo = '/user/dashboard';
+            return $this->redirectTo;
+                break;
+            case 1:
+                $this->redirectTo = '/admin/dashboard';
+                return $this->redirectTo;
+                break;
+            default:
+                $this->redirectTo = '/home';
+                return $this->redirectTo;
+        }
+         
+        // return $next($request);
+    } 
 
     /**
      * Create a new controller instance.
@@ -36,11 +54,6 @@ class LoginController extends Controller
      */
     public function __construct()
     {
-        if(Auth::check() && Auth::user()->role_id == 1){
-            $this->redirectTo = route('admin.dashboard');
-        } elseif(Auth::check() && Auth::user()->role_id == 2){
-            $this->redirectTo = route('user.dashboard');
-        }
        
         $this->middleware('guest')->except('logout');
     }
