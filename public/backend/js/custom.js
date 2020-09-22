@@ -6,18 +6,16 @@ jQuery( document ).ready(function() {
 	jQuery('#userlisting-datatable').DataTable({
 	"columnDefs": [{orderable: false, targets: [5]},],
 	});
-	jQuery('#artistlisting-datatable').DataTable({
-	"columnDefs": [{orderable: false, targets: [5]},],
-	});
+	jQuery('#artistlisting-datatable').DataTable();
 
    /* Profile Post Request Ajax Code*/
    jQuery('#modalProfileSubmit').on('submit', function(e) {
 	e.preventDefault();
 	jQuery("#successMsgP").html('');
 	jQuery("#errorsDeprtP").html('');
-	var btnText = jQuery("#savedBtn").html();
-	jQuery("#savedBtn").html(btnText + '<i class="fa fa-spinner fa-spin"></i>');
-	jQuery("#savedBtn").attr("disabled", true);
+	var btnText = jQuery("#savedBtnP").html();
+	jQuery("#savedBtnP").html(btnText + '<i class="fa fa-spinner fa-spin"></i>');
+	jQuery("#savedBtnP").attr("disabled", true);
 	var formData = jQuery(this);
 	var urls = formData.prop('action');
 	jQuery.ajax({
@@ -26,11 +24,21 @@ jQuery( document ).ready(function() {
 		data: formData.serialize(),
 		dataType: 'json',
 		success: function(data) {
+		if (data.success == true) {
 			jQuery("#successMsgP").html('<p class="inputsuccess">' + data.msg + '</p>');
 			jQuery("#successMsgP").removeClass("hidden");
+			jQuery("#errorsDeprtP").addClass("hidden");
 			setTimeout(function() {
 				location.reload(true);
 			}, 1000);
+
+		} else if(data.success == false){
+			jQuery("#errorsDeprtP").html('<p class="inputerror">' + data.msg + '</p>');
+			jQuery("#errorsDeprtP").removeClass("hidden");
+			jQuery("#successMsgP").addClass("hidden");
+			jQuery("#savedBtnP").html('Update');
+			jQuery("#savedBtnP").attr("disabled", false);
+		}
 		},
 		error: function(data) {
 			var errors = data.responseJSON;
@@ -40,12 +48,12 @@ jQuery( document ).ready(function() {
 			});
 			jQuery("#errorsDeprtP").html(erro);
 			jQuery("#errorsDeprtP").removeClass("hidden");
-			jQuery("#savedBtn").html(btnText);
-			jQuery("#savedBtn").attr("disabled", false);
+			jQuery("#successMsgP").addClass("hidden");
+			jQuery("#savedBtnP").html('Update');
+			jQuery("#savedBtnP").attr("disabled", false);
 		},
 	});
 });
-
 
 
 
@@ -54,8 +62,9 @@ jQuery( document ).ready(function() {
 	e.preventDefault();
 	jQuery("#successMsgPass").html('');
 	jQuery("#errorsDeprtPass").html('');
-	jQuery("#savedPass").css("display", "block");
-	jQuery("#savedBtnPass").css("display", "none");
+	var btnText = jQuery("#savedBtnPass").html();
+	jQuery("#savedBtnPass").html(btnText + '<i class="fa fa-spinner fa-spin"></i>');
+	jQuery("#savedBtnPass").attr("disabled", true);
 
 	var formData = jQuery(this);
 	var urls = formData.prop('action');
@@ -68,15 +77,30 @@ jQuery( document ).ready(function() {
 		if (data.success == true) {
 			jQuery("#successMsgPass").html('<p class="inputsuccess">' + data.msg + '</p>');
 			jQuery("#successMsgPass").removeClass("hidden");
+			jQuery("#errorsDeprtPass").addClass("hidden");
 			setTimeout(function() {
 				location.reload(true);
 			}, 1000);
 
 		} else if(data.success == false){
 			jQuery("#errorsDeprtPass").html('<p class="inputerror">' + data.msg + '</p>');
-			jQuery("#savedPass").css("display", "none");
-	        jQuery("#savedBtnPass").css("display", "block");
+			jQuery("#errorsDeprtPass").removeClass("hidden");
+			jQuery("#successMsgPass").addClass("hidden");
+			jQuery("#savedBtnPass").html('Update');
+			jQuery("#savedBtnPass").attr("disabled", false);
 		}
+		},
+		error: function(data) {
+			var errors = data.responseJSON;
+			var erro = '';
+			jQuery.each(errors['errors'], function(n, v) {
+				erro += '<p class="inputerror">' + v + '</p>';
+			});
+			jQuery("#errorsDeprtPass").html(erro);
+			jQuery("#errorsDeprtPass").removeClass("hidden");
+			jQuery("#successMsgPass").addClass("hidden");
+			jQuery("#savedBtnPass").html('Update');
+			jQuery("#savedBtnPass").attr("disabled", false);
 		},
 	});
 });

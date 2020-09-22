@@ -26,7 +26,7 @@
 				</div>
 				<div class="card-body">
 					<div class="table-responsive">
-						<table class="table table-bordered yajra-datatable">
+						<table id="artistlisting-datatable" class="table table-hover dt-responsive nowrap">
 							<thead>
 								<tr>
 									<th>S.No</th>
@@ -37,6 +37,35 @@
 									<th>Action</th>
 								</tr>
 							</thead>
+							<tbody>
+							  <?php $i=1; ?>
+								@forelse($category as $row)
+								<tr>
+									<td>{{$i}}</td>
+									<td>{{$row->name}}</td>
+									<td>{{$row->description}}</td>
+									<td>
+									@if($row->status == 0)
+										<a title="Click to Enable" href="{{route('category.status', ['g' => $row->id, 's' => 1])}}" class="tableLink"><img alt="Click to Enable" src="/assets/images/off.png" /></a> Disabled
+									@else
+										<a title="Click to Disable" href="{{route('category.status', ['g' => $row->id, 's' => 0])}}" class="tableLink"><img title="Click to Disable" src="/assets/images/on.png" /></a> Enabled
+									@endif
+									</td>
+									<td>{{$row->created_at}}</td>
+									<td>
+									<a class="anchorLess">
+									   <a title="Click to Edit" href="{{route('category.edit',[$row->id])}}" class="anchorLess"><i class="fas fa-edit info" aria-hidden="true" ></i></a>
+									   <a title="Click to Delete" href="javascript:void(0)" class="anchorLess" onclick="deletecategory(this,'{{$row->id}}');"><i class="fas fa-trash danger" aria-hidden="true" ></i></a>
+									</a>      
+									</td>
+								</tr>
+							  <?php $i++; ?>
+								@empty
+							   <tr>
+									<td colspan="6" class="text-center">No record found</td>
+								</tr>
+							 @endforelse 
+							</tbody>
 						</table>
 					</div>
 				</div>
@@ -44,37 +73,6 @@
         </div>
 	</div>
 </div>
-
-<script>
-  jQuery(function () {
-    var table = jQuery('.yajra-datatable').DataTable({
-        processing: true,
-        serverSide: true,
-        Filter: true,
- 
-        ajax: {
-          url: "{{ route('categories.list') }}",
-          data: function (d) {
-                d.search = jQuery('input[type="search"]').val()
-            }
-        },
-        columns: [
-                    { data: 'id', name: 'id' },
-                    { data: 'name', name: 'name' },
-                    { data: 'description', name: 'description' },
-                    { data: 'status', name: 'status',orderable: false, searchable: false,},
-                    { data: 'created_at', name: 'created_at' },
-                    {
-                      data: 'action', 
-                      name: 'action', 
-                      orderable: false, 
-                      searchable: false
-                  },
-                 ]
-        });
-     });
-  </script>
-
 <script type="text/javascript">
   function deletecategory(obj, pid) {
       var result = confirm("Are you sure you want to delete this Category ?");

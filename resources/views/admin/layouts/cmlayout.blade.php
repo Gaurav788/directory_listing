@@ -11,7 +11,13 @@
       
    </head>
    <body class="bg-gradient-primary">
-      @section('header')
+		@section('header')
+	  
+		@if(Auth::user())
+			@php 
+				$user = Auth::user();
+			@endphp
+		@endif
       <div id="wrapper">
          <!-- Sidebar -->
          <ul class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion" id="accordionSidebar">
@@ -82,7 +88,13 @@
             </li>       
 
             <li class="nav-item">
-               <a class="nav-link" href="javascript:void(0);">
+               <a class="nav-link" href="{{route('contactus.list')}}">
+               <i class="fas fa-quote-left"></i>
+               <span>Contact Us</span></a>
+            </li>
+
+            <li class="nav-item">
+               <a class="nav-link" href="{{route('testimonials.list')}}">
                <i class="fas fa-quote-left"></i>
                <span>Testimonial</span></a>
             </li>
@@ -143,6 +155,10 @@
                         </a>
                         <!-- Dropdown - User Information -->
                         <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in" aria-labelledby="userDropdown">
+						   
+                           <a class="dropdown-item text-center" href="javascript:void(0);">{{ $user->first_name.' '.$user->last_name}}<br><span style="font-size:12px;">Administrator</span></a>
+						   
+                           <div class="dropdown-divider"></div>
                            <a class="dropdown-item" href="#" data-toggle="modal" data-target="#profileModal">
                            <i class="fas fa-user fa-sm fa-fw mr-2 text-gray-400"></i>
                            Profile Setting
@@ -153,11 +169,6 @@
                            Change Password
                            </a>
 
-                           <div class="dropdown-divider"></div>
-                           <a class="dropdown-item" href="#" data-toggle="modal" data-target="#regadminModal">
-                           <i class="fa fa-users fa-sm fa-fw mr-2 text-gray-400"></i>
-                           Add New Admin
-                           </a>
                            <div class="dropdown-divider"></div>
 						   <a class="dropdown-item" href="{{ route('logout') }}"
                                        onclick="event.preventDefault();
@@ -194,24 +205,7 @@
       <a class="scroll-to-top rounded" href="#page-top">
       <i class="fas fa-angle-up"></i>
       </a>
-      <!-- Logout Modal-->
-      <div class="modal fade" id="logoutModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-         <div class="modal-dialog" role="document">
-            <div class="modal-content">
-               <div class="modal-header">
-                  <h5 class="modal-title" id="exampleModalLabel">Ready to Leave?</h5>
-                  <button class="close" type="button" data-dismiss="modal" aria-label="Close">
-                  <span aria-hidden="true">×</span>
-                  </button>
-               </div>
-               <div class="modal-body">Click "Logout" below if you are ready to end your current session.</div>
-               <div class="modal-footer">
-                  <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancel</button>
-                  <a class="btn btn-primary" href="{{route('logout')}}">Logout</a>
-               </div>
-            </div>
-         </div>
-      </div>
+	  
       <!-- Profile Popup model -->
       <div class="modal fade" id="profileModal" tabindex="-1" role="dialog" aria-labelledby="profileModalLabel" aria-hidden="true">
          <div class="modal-dialog" role="document">
@@ -222,17 +216,17 @@
                   <span aria-hidden="true">×</span>
                   </button>
                </div>
-               <form class="user" action="" id="modalProfileSubmit">
-                  @csrf
+               <form class="user" action="{{ route('admin.details.update') }}" id="modalProfileSubmit">
+					@csrf
                   <div class="modal-body">
                      <div id="successMsgP" class="hidden"></div>
                      <div id="errorsDeprtP" class="hidden"></div>
-                     <input type="hidden" name="adminid" value="@if(!empty(Session::get('admin'))){{Session::get('admin')->id}} @endif">
+                     <input type="hidden" name="adminid" value="@if(Auth::user()){{ $user->id }}@endif">
                      <div class="form-group">
-                        <input type="text" name="name" id="profilename" value="@if(!empty(Session::get('admin'))){{Session::get('admin')->name}}@endif" class="form-control form-control-user" placeholder="Profile Name">
+                        <input type="text" name="first_name" id="profilename" value="@if(Auth::user()){{ $user->first_name }}@endif" class="form-control form-control-user" placeholder="First Name">
                      </div>
                      <div class="form-group">
-                        <input type="email" name="email" id="profilemail" value="@if(!empty(Session::get('admin'))){{Session::get('admin')->email}}@endif" class="form-control form-control-user" placeholder="Profile Name">
+                        <input type="text" name="last_name" id="profilemail" value="@if(Auth::user()){{ $user->last_name }}@endif" class="form-control form-control-user" placeholder="Last Name">
                      </div>
                   </div>
                   <div class="modal-footer">
@@ -243,9 +237,9 @@
             </div>
          </div>
       </div>
-      <!-- Change PassWord Model -->
+      <!-- end Profile Popup model -->
 
-      <!-- Profile Popup model -->
+      <!-- Change PassWord Model -->
       <div class="modal fade" id="changepassModal" tabindex="-1" role="dialog" aria-labelledby="changepassModalLabel" aria-hidden="true">
          <div class="modal-dialog" role="document">
             <div class="modal-content">
@@ -255,12 +249,11 @@
                   <span aria-hidden="true">×</span>
                   </button>
                </div>
-               <form class="user" action="" id="modalchangepassSubmit">
+               <form class="user" action="{{ route('admin.password.update') }}" id="modalchangepassSubmit">
                   @csrf
                   <div class="modal-body">
                      <div id="successMsgPass"></div>
                      <div id="errorsDeprtPass"></div>
-                     <input type="hidden" name="adminid" value="@if(!empty(Session::get('admin'))) {{Session::get('admin')->id}} @endif">
                      <div class="form-group">
                         <input type="text" name="oldpassword" id="oldpassword" class="form-control form-control-user" placeholder="Enter Old Password!" required/>
                      </div>
@@ -271,54 +264,12 @@
                   <div class="modal-footer">
                      <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancel</button>
                      <button type="submit" class="btn btn-primary" id="savedBtnPass">Update</button>
-                     <button type="hidden" class="btn btn-primary" id="savedPass" style="display: none;"><i class="fa fa-spinner fa-spin"></i></button>
                   </div>
                </form>
             </div>
          </div>
       </div>
-      <!-- End Profile Popup model -->
-
-
-
-     <!-- Admin Popup model -->
-      <div class="modal fade" id="regadminModal" tabindex="-1" role="dialog" aria-labelledby="regadminModalLabel" aria-hidden="true">
-         <div class="modal-dialog" role="document">
-            <div class="modal-content">
-               <div class="modal-header">
-                  <h5 class="modal-title" id="modalTitleDepP">Admin Registration !</h5>
-                  <button class="close" type="button" data-dismiss="modal" aria-label="Close">
-                  <span aria-hidden="true">×</span>
-                  </button>
-               </div>
-               <form class="user" action="" id="modalregadminSubmit">
-                  @csrf
-                  <div class="modal-body">
-                     <div id="successMsg1"></div>
-                     <div id="errorsDeprt1"></div>
-
-                     <div class="form-group">
-                        <input type="text" name="name" id="name" class="form-control form-control-user" placeholder="Name" required/>
-                     </div>
-                     <div class="form-group">
-                        <input type="text" name="email" id="email" class="form-control form-control-user" placeholder="Email" required/>
-                     </div>
-
-                     <div class="form-group">
-                        <input type="text" name="password" id="password" class="form-control form-control-user" placeholder="password" required/>
-                     </div>
-
-                  </div>
-                  <div class="modal-footer">
-                     <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancel</button>
-                     <button type="submit" class="btn btn-primary" id="savedBtnAddmin">Save</button>
-                     <button type="hidden" class="btn btn-primary" id="savedmin" style="display: none;"><i class="fa fa-spinner fa-spin"></i></button>
-                  </div>
-               </form>
-            </div>
-         </div>
-      </div>
-      <!-- End Admin Popup model -->
+      <!-- End Change PassWord model -->
 
       @show
       <script src="{{asset('backend/js/bootstrap.bundle.min.js')}}"></script>

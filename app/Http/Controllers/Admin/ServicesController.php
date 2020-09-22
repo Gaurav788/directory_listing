@@ -6,58 +6,13 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Service;
 use DB;
-use DataTables;
-use Illuminate\Support\Str;
 
 class ServicesController extends Controller
 {
     //
     public function list_records(Request $request){
-        if ($request->ajax()) {
-
             $data = Service::get();
-            return DataTables::of($data)
-            ->addIndexColumn()
-            ->filter(function ($instance) use ($request) {
-                        if (!empty($request->get('name'))) {
-                            $instance->collection = $instance->collection->filter(function ($row) use ($request) {
-                                return Str::contains($row['name'], $request->get('name')) ? true : false;
-                            });
-                        }
-                        if (!empty($request->get('search'))) {
-                            $instance->collection = $instance->collection->filter(function ($row) use ($request) {
-                                if (Str::contains(Str::lower($row['name']), Str::lower($request->get('search')))){
-                                    return true;
-                                }
-   
-                                return false;
-                            });
-                        }
-                    })           
-
-                ->addColumn('action', function($row){
-                    $btn = '<a class="anchorLess">
-                    <a title="Click to Edit" href="' . route("service.edit", $row->id ) . '" class="anchorLess"><i class="fas fa-edit info" aria-hidden="true" ></i></a>
-                    <a title="Click to Delete" href="javascript:void(0)" class="anchorLess" onclick="deleteservice(this,'.$row->id.');"><i class="fas fa-trash danger" aria-hidden="true" ></i></a>';
-                    return $btn;
-                })
-
-               ->editColumn('status', function ($data) {
-               if($data->status == 0) {
-                   $stats = '<a title="Click to Enable" href="' . route("service.status", ["g" => $data->id, "s" => 1]) .
-                '" class="tableLink"><img alt="Click to Enable" src="/assets/images/off.png" /></a> Disabled';
-                }else{
-                     $stats = '<a title="Click to Disable" href="' . route("service.status", ["g" => $data->id, "s" => 0]) .
-                '" class="tableLink"><img title="Click to Disable" src="/assets/images/on.png" /></a> Enabled';
-                }
-                return $stats;     
-                })         
-
-                ->rawColumns(['action','status'])
-                ->make(true);
-
-            }
-        return view('admin.service.list');
+        return view('admin.service.list', compact('data'));
     }
 
     public function add_form(){

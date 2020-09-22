@@ -4,7 +4,7 @@
 <!-- Begin Page Content -->
 <div class="container-fluid">
 	<div class="d-sm-flex align-items-center justify-content-between mb-4">
-		<h1 class="h3 mb-0 text-gray-800">Payment Methods</h1>
+		<h1 class="h3 mb-0 text-gray-800">Testimonials List</h1>
 	</div>
 	<div class="flash-message">
 		@if(session()->has('status'))
@@ -18,19 +18,14 @@
 	<div class="row">
         <div class="col-xl-12 col-md-12">
 			<div class="card shadow mb-4">
-				<div class="card-header py-3">
-					<div class="buttons-right">
-						<a class="m-0 font-weight-bold btn-department-add pull-right hover-white" href="{{route('paymentmethod.add')}}">Add Payment Method</a>
-					</div>
-				</div>
 				<div class="card-body">
 					<div class="table-responsive">
-              <table id="artistlisting-datatable" class="table table-hover dt-responsive nowrap">
+						<table id="artistlisting-datatable" class="table table-hover dt-responsive nowrap">
 							<thead>
 								<tr>
 									<th>S.No</th>
-									<th>Name</th>
-									<th>Description</th>
+									<th>Person's Details</th>
+									<th>Feedback</th>
 									<th>Status</th>
 									<th>Date</th>
 									<th>Action</th>
@@ -41,20 +36,20 @@
 								@forelse($data as $row)
 								<tr>
 									<td>{{$i}}</td>
-									<td>{{$row->name}}</td>
-									<td>{{$row->description}}</td>
+									<td><p class="no-margin">{{$row->name}}</p><p class="no-margin">{{$row->email}}</p></td>
+									<td>{{$row->feedback}}</td>
 									<td>
 									@if($row->status == 0)
-										<a title="Click to Enable" href="{{route('paymentmethod.status', ['g' => $row->id, 's' => 1])}}" class="tableLink"><img alt="Click to Enable" src="/assets/images/off.png" /></a> Disabled
+										<a title="Click to Enable" href="{{route('testimonial.status', ['g' => $row->id, 's' => 1])}}" class="tableLink"><img alt="Click to Enable" src="/assets/images/off.png" /></a> Disabled
 									@else
-										<a title="Click to Disable" href="{{route('paymentmethod.status', ['g' => $row->id, 's' => 0])}}" class="tableLink"><img title="Click to Disable" src="/assets/images/on.png" /></a> Enabled
+										<a title="Click to Disable" href="{{route('testimonial.status', ['g' => $row->id, 's' => 0])}}" class="tableLink"><img title="Click to Disable" src="/assets/images/on.png" /></a> Enabled
 									@endif
 									</td>
 									<td>{{$row->created_at}}</td>
 									<td>
 									<a class="anchorLess">
-									   <a title="Click to Edit" href="{{route('paymentmethod.edit',[$row->id])}}" class="anchorLess"><i class="fas fa-edit info" aria-hidden="true" ></i></a>
-									   <a title="Click to Delete" href="javascript:void(0)" class="anchorLess" onclick="deletepaymentmethod(this,'{{$row->id}}');"><i class="fas fa-trash danger" aria-hidden="true" ></i></a>
+									   <a title="Click to Reply" href="{{route('testimonial.reply',[$row->id])}}" class="anchorLess">Reply</a>
+									   <a title="Click to Delete" href="javascript:void(0)" class="anchorLess" onclick="deletetestimonial(this,'{{$row->id}}');"><i class="fas fa-trash danger" aria-hidden="true" ></i></a>
 									</a>      
 									</td>
 								</tr>
@@ -74,8 +69,8 @@
 </div>
 
 <script type="text/javascript">
-  function deletepaymentmethod(obj, pid) {
-      var result = confirm("Are you sure you want to delete this Payment method ?");
+  function deletetestimonial(obj, pid) {
+      var result = confirm("Are you sure you want to delete this testimonial ?");
       if (result) {
           jQuery.ajax({
               method: 'POST',
@@ -97,5 +92,8 @@
       }
   }
 </script>
+<style>
+.no-margin{margin:0px;}
+</style>
 <!-- /.container-fluid -->
 @endsection
