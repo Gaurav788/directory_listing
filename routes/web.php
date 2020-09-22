@@ -99,10 +99,10 @@ Route::get('admin/contactus/list', 'Admin\ContactUsController@list_records')->na
 Route::get('admin/contactus/status/update', 'Admin\ContactUsController@change_status')->name('contactus.status')->middleware('auth');
 Route::post('admin/contactus/del', 'Admin\ContactUsController@del_record')->name('contactus.del')->middleware('auth');
 Route::get('admin/contactus/reply/{id}', 'Admin\ContactUsController@reply')->name('contactus.reply')->middleware('auth');
+Route::post('admin/contactus/replied', 'Admin\ContactUsController@replied')->name('contactus.replied')->middleware('auth');
 
 //Testimonials Routes
 
 Route::get('admin/testimonials/list', 'Admin\TestimonialsController@list_records')->name('testimonials.list')->middleware('auth');
 Route::get('admin/testimonial/status/update', 'Admin\TestimonialsController@change_status')->name('testimonial.status')->middleware('auth');
 Route::post('admin/testimonial/del', 'Admin\TestimonialsController@del_record')->name('testimonial.del')->middleware('auth');
-Route::get('admin/testimonial/reply/{id}', 'Admin\TestimonialsController@reply')->name('testimonial.reply')->middleware('auth');

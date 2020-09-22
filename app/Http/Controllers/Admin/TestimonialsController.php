@@ -16,10 +16,6 @@ class TestimonialsController extends Controller
         return view('admin.testimonials.list', compact('data'));
     }
 	
-    public function reply(Request $request){
-        return view('admin.testimonials.reply_back');
-    }
-	
     public function del_record(Request $request){
         try {
             Testimonial::where('id',$request->input('id'))->delete();

@@ -48,7 +48,6 @@
 									<td>{{$row->created_at}}</td>
 									<td>
 									<a class="anchorLess">
-									   <a title="Click to Reply" href="{{route('testimonial.reply',[$row->id])}}" class="anchorLess">Reply</a>
 									   <a title="Click to Delete" href="javascript:void(0)" class="anchorLess" onclick="deletetestimonial(this,'{{$row->id}}');"><i class="fas fa-trash danger" aria-hidden="true" ></i></a>
 									</a>      
 									</td>
