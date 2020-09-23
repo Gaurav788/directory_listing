@@ -27,6 +27,7 @@
 									<th>Contact Person's Details</th>
 									<th>Reason To Contact</th>
 									<th>Message</th>
+									<th>Reply</th>
 									<th>Status</th>
 									<th>Date</th>
 									<th>Action</th>
@@ -37,9 +38,10 @@
 								@forelse($data as $row)
 								<tr>
 									<td>{{$i}}</td>
-									<td><p class="no-margin">{{$row->name}}</p><p class="no-margin">{{$row->email}}</p><p class="no-margin">{{$row->mobile}}</p></td>
+									<td><p class="no-margin"><strong>{{$row->name}}</strong></p><p class="no-margin">{{$row->email}}</p><p class="no-margin">{{$row->mobile}}</p></td>
 									<td>{{$row->reason_to_contact}}</td>
-									<td>{{$row->message}}</td>
+									<td>{{strip_tags($row->message)}}</td>
+									<td>{{strip_tags($row->reply_message)}}</td>
 									<td>
 									@if($row->status == 0)
 										<a title="Click to Enable" href="{{route('contactus.status', ['g' => $row->id, 's' => 1])}}" class="tableLink"><img alt="Click to Enable" src="/assets/images/off.png" /></a> Disabled

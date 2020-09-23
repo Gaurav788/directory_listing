@@ -26,6 +26,7 @@
 									<th>S.No</th>
 									<th>Person's Details</th>
 									<th>Feedback</th>
+									<th>Url</th>
 									<th>Status</th>
 									<th>Date</th>
 									<th>Action</th>
@@ -37,7 +38,8 @@
 								<tr>
 									<td>{{$i}}</td>
 									<td><p class="no-margin">{{$row->name}}</p><p class="no-margin">{{$row->email}}</p></td>
-									<td>{{$row->feedback}}</td>
+									<td>{{strip_tags($row->feedback)}}</td>
+									<td>{{$row->url}}</td>
 									<td>
 									@if($row->status == 0)
 										<a title="Click to Enable" href="{{route('testimonial.status', ['g' => $row->id, 's' => 1])}}" class="tableLink"><img alt="Click to Enable" src="/assets/images/off.png" /></a> Disabled
@@ -55,7 +57,7 @@
 							  <?php $i++; ?>
 								@empty
 							   <tr>
-									<td colspan="5" class="text-center">No record found</td>
+									<td colspan="6" class="text-center">No record found</td>
 								</tr>
 							 @endforelse 
 							</tbody>

@@ -8,13 +8,23 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\Rule;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Collection;
+use Illuminate\Support\Facades\Crypt;
+use Image;
 use DB;
+use Session;
 use App\User;
+use App\User_detail;
 
 class AdminDashboardController extends Controller
 {
     //
 	public function index(){
+		$users_details = User_detail::where('user_id' , Auth::user()->id)->first();
+		if($users_details != null)//if doesn't exist: create
+		{
+			Session::put('userdetails', $users_details);
+		}
         return view('admin.home');
 	}
 	
@@ -43,13 +53,44 @@ class AdminDashboardController extends Controller
 
         	);
         	
+            if($request->hasFile('profile_pic'))
+            {
+                $allowedfileExtension=['jpg','png'];
+                $file = $request->file('profile_pic');
+                $extension = $file->getClientOriginalExtension();
+                $check=in_array($extension,$allowedfileExtension);
+                //dd($check);
+                if($check)
+                {
+					$image_resize = Image::make($file)->resize( null, 90, function ( $constraint ) {
+                                                                        $constraint->aspectRatio();
+                                                                    })->encode( $extension ); 
+					$users_details = User_detail::where('user_id' , Auth::user()->id)->first();
+					if($users_details == null)//if doesn't exist: create
+					{
+						$users_details = User_detail::create([
+							'user_id' => Auth::user()->id,
+							'profile_picture'=>$image_resize,
+							'imagetype' => $extension,
+							'status' => 1,
+							'created_at' => date('Y-m-d H:i:s')
+						]); 
+					}
+					else //if exist: update
+					{
+						$users_details->update(['profile_picture'=>$image_resize, 'imagetype' => $extension, 'updated_at' => date('Y-m-d H:i:s')]);
+					}
+                } else {
+					return response()->json(["success" => false, "msg" => "Please select png or jpg images."],200);
+                }
+            }
 			$record = User::where('id', $postData['adminid'])->update($data);
 			DB::commit();
         	
             if ($record > 0) {
-                return response()->json(["success"=>true,"msg"=>"User details updated Successfully"],200);
+                return response()->json(["success" => true, "msg" => "User details updated Successfully"],200);
             }else{
-                return response()->json(["success"=>false,"msg"=>"something went wrong"],200);
+                return response()->json(["success" => false, "msg" => "something went wrong"],200);
             }
         	
         } catch ( \Exception $e ) {

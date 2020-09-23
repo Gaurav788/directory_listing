@@ -42,7 +42,7 @@
 								<tr>
 									<td>{{$i}}</td>
 									<td>{{$row->name}}</td>
-									<td>{{$row->description}}</td>
+									<td>{{strip_tags($row->description)}}</td>
 									<td>
 									@if($row->status == 0)
 										<a title="Click to Enable" href="{{route('paymentmethod.status', ['g' => $row->id, 's' => 1])}}" class="tableLink"><img alt="Click to Enable" src="/assets/images/off.png" /></a> Disabled

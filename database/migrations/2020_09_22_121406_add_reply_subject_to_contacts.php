@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class AddReplyMessageAndRepliedOnToContacts extends Migration
+class AddReplySubjectToContacts extends Migration
 {
     /**
      * Run the migrations.
@@ -14,8 +14,7 @@ class AddReplyMessageAndRepliedOnToContacts extends Migration
     public function up()
     {
         Schema::table('contacts', function (Blueprint $table) {
-			$table->mediumText('reply_message')->after('message')->nullable();
-			$table->dateTime('replied_on')->after('reply_message')->nullable();
+			$table->text('reply_subject')->after('message')->nullable();
         });
     }
 
@@ -27,7 +26,7 @@ class AddReplyMessageAndRepliedOnToContacts extends Migration
     public function down()
     {
         Schema::table('contacts', function (Blueprint $table) {
-            $table->dropColumn(['reply_message',  'replied_on']);
+            $table->dropColumn('reply_subject');
         });
     }
 }

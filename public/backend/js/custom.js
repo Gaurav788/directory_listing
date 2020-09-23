@@ -16,13 +16,17 @@ jQuery( document ).ready(function() {
 	var btnText = jQuery("#savedBtnP").html();
 	jQuery("#savedBtnP").html(btnText + '<i class="fa fa-spinner fa-spin"></i>');
 	jQuery("#savedBtnP").attr("disabled", true);
-	var formData = jQuery(this);
-	var urls = formData.prop('action');
+	var formData = new FormData(this);
+	var formdata = jQuery(this);
+	var urls = formdata.prop('action');
 	jQuery.ajax({
 		type: "POST",
 		url: urls,
-		data: formData.serialize(),
+		data: formData,
 		dataType: 'json',
+                cache:false,
+                contentType: false,
+                processData: false,
 		success: function(data) {
 		if (data.success == true) {
 			jQuery("#successMsgP").html('<p class="inputsuccess">' + data.msg + '</p>');

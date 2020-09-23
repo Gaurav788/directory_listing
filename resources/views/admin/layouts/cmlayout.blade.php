@@ -151,7 +151,14 @@
                      <li class="nav-item dropdown no-arrow">
                         <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                         <span class="mr-2 d-none d-lg-inline text-gray-600 small captialize"> </span>
-                        <img class="img-profile rounded-circle" src="{{asset('backend/images/dummyprofile.jpg')}}">
+						@if(session()->has('userdetails'))
+							@php
+							$userdata = session()->get('userdetails');
+							@endphp
+							<img  class="img-profile rounded-circle" src="{{ 'data:image/' .$userdata['imagetype']. ';base64,' .base64_encode($userdata['profile_picture']) }}">
+						@else								
+							<img class="img-profile rounded-circle" src="{{asset('backend/images/dummyprofile.jpg')}}">
+						@endif
                         </a>
                         <!-- Dropdown - User Information -->
                         <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in" aria-labelledby="userDropdown">
@@ -216,7 +223,7 @@
                   <span aria-hidden="true">×</span>
                   </button>
                </div>
-               <form class="user" action="{{ route('admin.details.update') }}" id="modalProfileSubmit">
+               <form class="user" action="{{ route('admin.details.update') }}" id="modalProfileSubmit" enctype="multipart/form-data">
 					@csrf
                   <div class="modal-body">
                      <div id="successMsgP" class="hidden"></div>
@@ -227,6 +234,14 @@
                      </div>
                      <div class="form-group">
                         <input type="text" name="last_name" id="profilemail" value="@if(Auth::user()){{ $user->last_name }}@endif" class="form-control form-control-user" placeholder="Last Name">
+                     </div>
+                     <div class="form-group">
+                        <input type="file" name="profile_pic" id="profile_pic" class="form-control form-control-user">
+                     </div>
+                     <div class="form-group">
+						@if(session()->has('userdetails'))
+							<img  class="img-profile rounded-circle" src="{{ 'data:image/' .$userdata['imagetype']. ';base64,' .base64_encode($userdata['profile_picture']) }}">
+						@endif
                      </div>
                   </div>
                   <div class="modal-footer">

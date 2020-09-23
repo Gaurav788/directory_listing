@@ -46,7 +46,7 @@
                         <tr>
                             <td>{{$i}}</td>
                             <td>{{$row->name}}</td>
-                            <td>{{$row->details}}</td>
+                            <td>{{strip_tags($row->details)}}</td>
                             <td>{{$row->price}}</td>
                             <td>{{$row->currency}}</td>
                             <td>{{$row->duration}}</td>

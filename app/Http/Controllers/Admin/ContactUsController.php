@@ -28,7 +28,7 @@ class ContactUsController extends Controller
                 'subject' => 'required',
                 'reply_message' => 'required'
             ], [
-                'name.required' => 'Name is required',
+                'fromemail.required' => 'From email is required',
                 'subject.required' => 'You can not left subject empty. Please add someting to describe your reply',
                 'reply_message.required' => 'You can not left reply message empty. Please add someting to your reply'
             ]);
@@ -36,16 +36,17 @@ class ContactUsController extends Controller
     	try {
             //dd($postData);
         	$data = array(
-        			'name' => $postData['name'],
-        			'description' => $postData['description'],
+        			'reply_subject' => $postData['subject'],
+        			'reply_message' => $postData['reply_message'],
+        			'replied_on' => date('Y-m-d H:i:s'),
         			'updated_at' => date('Y-m-d H:i:s')
 
         	);
         	
-			$record = Payment_method::where('id', $postData['edit_record_id'])->update($data);
+			$record = Contact::where('id', $postData['edit_record_id'])->update($data);
 			DB::commit();
         	
-        	return redirect('admin/paymentmethods/list')->with('status', 'success')->with('message', 'Payment method Updated Successfully');
+        	return redirect('admin/contactus/list')->with('status', 'success')->with('message', 'Reply Updated Successfully');
         	
         } catch ( \Exception $e ) {
             DB::rollback();

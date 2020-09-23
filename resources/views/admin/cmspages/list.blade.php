@@ -45,7 +45,7 @@
                         <tr>
                             <td>{{$i}}</td>
                             <td>{{$row->title}}</td>
-                            <td>{{$row->description}}</td>
+                            <td>{{strip_tags($row->description)}}</td>
                             <td>{{$row->meta_title}}</td>
                             <td>{{$row->meta_keyword}}</td>
                             <td>
