@@ -42,12 +42,12 @@
 									<td>{{$row->url}}</td>
 									<td>
 									@if($row->status == 0)
-										<a title="Click to Enable" href="{{route('testimonial.status', ['g' => $row->id, 's' => 1])}}" class="tableLink"><img alt="Click to Enable" src="/assets/images/off.png" /></a> Disabled
+										<a title="Click to Enable" href="{{route('testimonial.status', ['g' => $row->id, 's' => 1])}}" class="tableLink"><img alt="Click to Enable" src="/assets/images/off.png" /></a>&nbsp;Disabled
 									@else
-										<a title="Click to Disable" href="{{route('testimonial.status', ['g' => $row->id, 's' => 0])}}" class="tableLink"><img title="Click to Disable" src="/assets/images/on.png" /></a> Enabled
+										<a title="Click to Disable" href="{{route('testimonial.status', ['g' => $row->id, 's' => 0])}}" class="tableLink"><img title="Click to Disable" src="/assets/images/on.png" /></a>&nbsp;Enabled
 									@endif
 									</td>
-									<td>{{$row->created_at}}</td>
+									<td>{{date('d F Y', strtotime($row->created_at))}}</td>
 									<td>
 									<a class="anchorLess">
 									   <a title="Click to Delete" href="javascript:void(0)" class="anchorLess" onclick="deletetestimonial(this,'{{$row->id}}');"><i class="fas fa-trash danger" aria-hidden="true" ></i></a>

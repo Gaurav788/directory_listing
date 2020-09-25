@@ -58,26 +58,32 @@
 
             <li class="nav-item">
                <a class="nav-link" href="{{route('services.list')}}">
-               <i class="fas fa-user"></i>
+               <i class="fas fa-cog"></i>
                <span>Services</span></a>
             </li>
 
          
             <li class="nav-item">
                <a class="nav-link" href="{{route('tags.list')}}">
-               <i class="fas fa-paint-brush"></i>
+               <i class="fas fa-tags"></i>
                <span>Tags</span></a>
             </li>
 
             <li class="nav-item">
+               <a class="nav-link" href="{{route('paymentgateways.list')}}">
+               <i class="fas fa-credit-card"></i>
+               <span>Payment Gateways</span></a>
+            </li>  
+
+            <li class="nav-item">
                <a class="nav-link" href="{{route('paymentmethods.list')}}">
-               <i class="fas fa-user-cog"></i>
+               <i class="fas fa-credit-card"></i>
                <span>Payment Methods</span></a>
             </li>  
 
             <li class="nav-item">
                <a class="nav-link" href="{{route('membershipplan.list')}}">
-               <i class="fas fa-user-cog"></i>
+               <i class="fas fa-list"></i>
                <span>Membership Plans</span></a>
             </li>
 			
@@ -89,13 +95,13 @@
 
             <li class="nav-item">
                <a class="nav-link" href="{{route('contactus.list')}}">
-               <i class="fas fa-quote-left"></i>
+               <i class="fas fa-comment"></i>
                <span>Contact Us</span></a>
             </li>
 
             <li class="nav-item">
                <a class="nav-link" href="{{route('testimonials.list')}}">
-               <i class="fas fa-quote-left"></i>
+               <i class="fas fa-comments"></i>
                <span>Testimonial</span></a>
             </li>
 
@@ -295,5 +301,11 @@
       <script src="{{asset('backend/js/dataTables.bootstrap4.min.js')}}"></script>
     
     @yield('scripts')
+	
+<style> 
+table.dataTable.nowrap td {
+    white-space: normal !important;
+}
+</style>
    </body>
 </html>

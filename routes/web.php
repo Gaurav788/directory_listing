@@ -83,6 +83,16 @@ Route::post('admin/membershipplan/update', 'Admin\MembershipPlansController@upda
 Route::get('admin/membershipplan/status/update', 'Admin\MembershipPlansController@change_status')->name('membershipplan.status')->middleware('admin');
 Route::post('admin/membershipplan/del', 'Admin\MembershipPlansController@del_record')->name('membershipplan.del')->middleware('admin');
 
+//Payment Gateways Routes
+
+Route::get('admin/paymentgateways/list', 'Admin\PaymentGatewaysController@list_records')->name('paymentgateways.list')->middleware('admin');
+Route::get('admin/paymentgateway/add', 'Admin\PaymentGatewaysController@add_form')->name('paymentgateway.add')->middleware('admin');
+Route::post('admin/paymentgateway/create', 'Admin\PaymentGatewaysController@create_record')->name('paymentgateway.create')->middleware('admin');
+Route::get('admin/paymentgateway/edit/{id}', 'Admin\PaymentGatewaysController@edit_form')->name('paymentgateway.edit')->middleware('admin');
+Route::post('admin/paymentgateway/update', 'Admin\PaymentGatewaysController@update_record')->name('paymentgateway.update')->middleware('admin');
+Route::get('admin/paymentgateway/status/update', 'Admin\PaymentGatewaysController@change_status')->name('paymentgateway.status')->middleware('admin');
+Route::post('admin/paymentgateway/del', 'Admin\PaymentGatewaysController@del_record')->name('paymentgateway.del')->middleware('admin');
+
 //CMS Pages Routes
 
 Route::get('admin/cmspages/list', 'Admin\CmsPagesController@list_records')->name('cmspages.list')->middleware('admin');

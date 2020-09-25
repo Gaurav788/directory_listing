@@ -16,3 +16,9 @@ use Illuminate\Http\Request;
 Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
 });
+Route::group(['middleware' => ['cors', 'json.response']], function () {	
+	Route::post('register', 'API\ApiAuthController@register');
+	Route::post('login', 'API\ApiAuthController@login');
+	Route::get('logout', 'API\ApiAuthController@logout');
+});
+

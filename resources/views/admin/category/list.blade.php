@@ -46,12 +46,12 @@
 									<td>{{strip_tags($row->description)}}</td>
 									<td>
 									@if($row->status == 0)
-										<a title="Click to Enable" href="{{route('category.status', ['g' => $row->id, 's' => 1])}}" class="tableLink"><img alt="Click to Enable" src="/assets/images/off.png" /></a> Disabled
+										<a title="Click to Enable" href="{{route('category.status', ['g' => $row->id, 's' => 1])}}" class="tableLink"><img alt="Click to Enable" src="/assets/images/off.png" /></a>&nbsp;Disabled
 									@else
-										<a title="Click to Disable" href="{{route('category.status', ['g' => $row->id, 's' => 0])}}" class="tableLink"><img title="Click to Disable" src="/assets/images/on.png" /></a> Enabled
+										<a title="Click to Disable" href="{{route('category.status', ['g' => $row->id, 's' => 0])}}" class="tableLink"><img title="Click to Disable" src="/assets/images/on.png" /></a>&nbsp;Enabled
 									@endif
 									</td>
-									<td>{{$row->created_at}}</td>
+									<td>{{date('d F Y', strtotime($row->created_at))}}</td>
 									<td>
 									<a class="anchorLess">
 									   <a title="Click to Edit" href="{{route('category.edit',[$row->id])}}" class="anchorLess"><i class="fas fa-edit info" aria-hidden="true" ></i></a>
