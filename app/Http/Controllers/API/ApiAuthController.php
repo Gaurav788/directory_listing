@@ -6,6 +6,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash; 
 use Illuminate\Support\Facades\Validator;
 use App\User; 
+use App\User_detail; 
 use Illuminate\Support\Str;
 class ApiAuthController extends Controller 
 {
@@ -30,14 +31,19 @@ class ApiAuthController extends Controller
 		$postArray = $request->all(); 
 	   
 		$postArray['password'] = bcrypt($postArray['password']); 
-		$postArray['status'] = 0; 
+		$postArray['status'] = 1; 
 		$postArray['role_id'] = 2; 
 		$postArray['social_type'] = 'website'; 
 		$postArray['social_id'] = 0; 
 		$postArray['created_at'] = date('Y-m-d H:i:s'); 
 		$user = User::create($postArray); 
-		
         $accessToken = $user->createToken('authToken')->accessToken;
+		$user_detail = array(
+        	'user_id' => $user->id,
+        	'status' => 1,
+        	'created_at' => date('Y-m-d H:i:s')
+        );
+		User_detail::create($user_detail);
 
         return response(['status' => 'success',  'user' => $user, 'access_token' => $accessToken]);
 		/*$success['token'] = $user->createToken('Laravel Password Grant Client')->accessToken;	

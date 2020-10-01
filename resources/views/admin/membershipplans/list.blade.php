@@ -48,7 +48,7 @@
                             <td>{{$row->name}}</td>
                             <td>{{strip_tags($row->details)}}</td>
                             <td>{{$row->price}}</td>
-                            <td>{{$row->currency}}</td>
+                            <td>{{$row->currency->name}}</td>
                             <td>{{$row->duration}}</td>
                             <td>
 							@if($row->status == 0)

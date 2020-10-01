@@ -16,6 +16,7 @@ class DatabaseSeeder extends Seeder
 			RolesTableSeeder::class,
 			CountriesTableSeeder::class,
 			StatesTableSeeder::class,
+			UsersTableSeeder::class,
 		]);
     }
 }

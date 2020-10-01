@@ -24,7 +24,7 @@ class CreateCompanyLocationsTable extends Migration
 				$table->string('zipcode');
 				$table->string('status');
 				$table->timestamps();
-				$table->foreign('user_id')->references('id')->on('users');
+				$table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
 				$table->foreign('state_id')->references('id')->on('states');
 				$table->foreign('country_id')->references('id')->on('countries');
 			});

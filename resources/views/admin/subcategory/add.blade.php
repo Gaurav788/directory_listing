@@ -4,7 +4,7 @@
                 <div class="container-fluid">
                     <div class="row page-title  no-display">
                         <div class="col-md-12">
-                            <h4 class="mb-1 mt-0">Categories</h4>
+                            <h4 class="mb-1 mt-0">SubCategories</h4>
                         </div>
                     </div>
 					<div class="flash-message">
@@ -22,32 +22,32 @@
                             <div class="card">
                                 <div class="card-body pt-2 pb-3 manageClinicSection">
                                     <h5 class="mt-3 mb-4">
-										Create Category
-										<a href="{{route('categories.list')}}" class="float-right"><i data-feather="x"></i></a>					
+										Create SubCategory
+										<a href="{{route('subcategories.list')}}" class="float-right"><i data-feather="x"></i></a>					
 									</h5>
-									<form action="{{route('category.create')}}" method="post" class="user" id="add_genre_form" enctype="multipart/form-data">
-										@csrf													
+									<form action="{{route('subcategory.create')}}" method="post" class="user" id="add_genre_form" enctype="multipart/form-data">
+										@csrf								
 											<div class="row">
 												<div class="col-lg-4 col-md-6 col-12">
 													<div class="form-group">
-														<label>Parent Category<span class="required">*</span></label>
-														<select name="parent_id" id="parent_id" class="form-control form-control-user" required>
-															<option value="">Select Parent Category</option>
-															<option value="0">Root</option>
-															@foreach($categorylist as $row)
-															<option value="{{$row->id}}" {{ old('parent_id') == $row->id ? 'selected' : ''}}>{{$row->name}}</option>
+														<label>Category<span class="required">*</span></label>
+														<select name="category" id="duration" class="form-control form-control-user" required>
+															<option value="">Select Category</option>
+															@foreach($categories as $row)
+															<option value="{{$row->id}}" {{ old('category') == $row->id  ? 'selected' : ''}}>{{$row->name}}</option>
 															@endforeach
 														</select>
-														@if ($errors->has('parent_id'))
-															<span class="text-danger">{{ $errors->first('parent_id') }}</span>
+														@if ($errors->has('category'))
+															<span class="text-danger">{{ $errors->first('category') }}</span>
 														@endif
+														
 													</div>
 												</div>
-											</div>											
+											</div>												
 											<div class="row">
 												<div class="col-lg-4 col-md-6 col-12">
 													<div class="form-group">
-														<label>Subcategory Name<span class="required">*</span></label>
+														<label>Name<span class="required">*</span></label>
 														<input type="text" name="name" id="name" value="{{old('name')}}" class="form-control form-control-user" required />
 														@if ($errors->has('name'))
 															<span class="text-danger">{{ $errors->first('name') }}</span>
@@ -67,22 +67,11 @@
 												</div>
 												
 											
-											</div>											
-											<div class="row">
-												<div class="col-lg-4 col-md-6 col-12">
-													<div class="form-group">
-														<label>Sorting Order<span class="required">*</span></label>
-														<input type="text" name="sort_order" id="sort_order" value="{{old('sort_order')}}" class="form-control form-control-user" required />
-														@if ($errors->has('sort_order'))
-															<span class="text-danger">{{ $errors->first('sort_order') }}</span>
-														@endif
-													</div>
-												</div>
-											</div>						
+											</div>							
 											<div class="mt-1 mb-1">
 												<div class="text-left d-print-none mt-4">
 													<button type="submit" id="save-category-btn" class="btn btn-primary">Save</button>
-													<a href="{{route('categories.list')}}" class="btn btn-light">Cancel</a>
+													<a href="{{route('subcategories.list')}}" class="btn btn-light">Cancel</a>
 												</div>
 												
 											</div>

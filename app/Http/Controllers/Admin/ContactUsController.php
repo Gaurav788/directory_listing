@@ -63,15 +63,4 @@ class ContactUsController extends Controller
             return redirect()->back()->with('status', 'error')->with('message', $ex->getMessage());
         }
     }
-
-    public function change_status(Request $request){
-        $getData = $request->all();
-
-        $contact = Contact::find($getData['g']);
-        $contact->status = $getData['s'];
-        $contact->save();
-
-        return redirect()->back()->with('status', 'success')->with('message', 'Info Status Changed Successfully');
-
-    }
 }

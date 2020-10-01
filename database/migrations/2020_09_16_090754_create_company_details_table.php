@@ -30,7 +30,7 @@ class CreateCompanyDetailsTable extends Migration
 				$table->string('custom_badge_code');
 				$table->string('profile_stats');
 				$table->timestamps();
-				$table->foreign('user_id')->references('id')->on('users');
+				$table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
 			});
 		}
     }

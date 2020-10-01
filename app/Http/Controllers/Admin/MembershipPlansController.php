@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Membership_plan;
+use App\Currency;
 use DB;
 
 class MembershipPlansController extends Controller
@@ -21,7 +22,8 @@ class MembershipPlansController extends Controller
     }
 
     public function add_form(){
-    	return view('admin.membershipplans.add');
+            $currency_data = Currency::where('status', 1)->get();
+    	return view('admin.membershipplans.add', compact('currency_data'));
     }
 
 
@@ -36,23 +38,23 @@ class MembershipPlansController extends Controller
                 'name.required' => 'Name is required',
                 'details.required' => 'You can not left details empty. Please add someting to describe plan',
                 'price.required' => 'You can not left price empty.',
-                'currency.required' => 'You can not left currency empty.',
+                'currency.required' => 'Please select any one currency.',
                 'duration.required' => 'Please select one duration.'
             ]);
     	DB::beginTransaction();
     	try {
         	$postData = $request->all();
-            //dd($postData); 
         	$data = array(
         			'name' => $postData['name'],
         			'details' => $postData['details'],
+        			'currency_id' => $postData['currency'],
         			'price' => $postData['price'],
-        			'currency' => $postData['currency'],
         			'duration' => $postData['duration'],
 					'status' => 1,
         			'created_at' => date('Y-m-d H:i:s')
 
         	);
+            //dd($data); 
 			$record = Membership_plan::create($data);
 			DB::commit();
         	if($record){
@@ -68,7 +70,8 @@ class MembershipPlansController extends Controller
 
     public function edit_form($id){
     	$record = Membership_plan::find($id);
-    	return view('admin.membershipplans.edit', compact('record'));
+            $currency_data = Currency::where('status', 1)->get();
+    	return view('admin.membershipplans.edit', compact('record', 'currency_data'));
     }
 
     public function update_record(Request $request){
@@ -94,7 +97,7 @@ class MembershipPlansController extends Controller
         			'name' => $postData['name'],
         			'details' => $postData['details'],
         			'price' => $postData['price'],
-        			'currency' => $postData['currency'],
+        			'currency_id' => $postData['currency'],
         			'duration' => $postData['duration'],
         			'updated_at' => date('Y-m-d H:i:s')
 

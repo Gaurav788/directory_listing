@@ -13,9 +13,11 @@ class AddImagetypeToUserDetails extends Migration
      */
     public function up()
     {
-        Schema::table('user_details', function (Blueprint $table) {
-			$table->string('imagetype')->after('profile_picture')->nullable();
-        });
+		if (Schema::hasTable('user_details')) {
+			Schema::table('user_details', function (Blueprint $table) {
+				$table->string('imagetype')->after('profile_picture')->nullable();
+			});
+		}
     }
 
     /**

@@ -26,7 +26,7 @@ class CreateCompanyMembershipHistoriesTable extends Migration
 				$table->string('transaction_id');
 				$table->string('transaction_status');
 				$table->timestamps();
-				$table->foreign('user_id')->references('id')->on('users');
+				$table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
 				$table->foreign('membership_plan_id')->references('id')->on('membership_plans');
 				$table->foreign('payment_method_id')->references('id')->on('payment_methods');
 			});

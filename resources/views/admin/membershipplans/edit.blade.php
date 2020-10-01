@@ -57,7 +57,12 @@
 												<div class="col-lg-4 col-md-6 col-12">
 													<div class="form-group">
 														<label>Currency<span class="required">*</span></label>
-														<input type="text" name="currency" id="currency" value="{{old('currency', $record->currency)}}" class="form-control form-control-user" required />
+														<select name="currency" id="currency" class="form-control form-control-user" required>
+															<option value="">Select Currency</option>
+															@foreach($currency_data as $row)
+															<option value="{{$row->id}}" {{ old('currency', $record->currency_id) == $row->id ? 'selected' : ''}}>{{$row->name}}</option>
+															@endforeach
+														</select>
 														@if ($errors->has('currency'))
 															<span class="text-danger">{{ $errors->first('currency') }}</span>
 														@endif

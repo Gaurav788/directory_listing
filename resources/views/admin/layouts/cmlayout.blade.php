@@ -39,7 +39,7 @@
             <hr class="sidebar-divider">
 			
             <li class="nav-item">
-               <a class="nav-link" href="javascript:void(0);">
+               <a class="nav-link" href="{{route('users.list')}}">
                <i class="fas fa-user"></i>
                <span>Users</span></a>
             </li>
@@ -60,6 +60,12 @@
                <a class="nav-link" href="{{route('services.list')}}">
                <i class="fas fa-cog"></i>
                <span>Services</span></a>
+            </li>
+
+            <li class="nav-item">
+               <a class="nav-link" href="{{route('currencies.list')}}">
+               <i class="fas fa-credit-card"></i>
+               <span>Currencies</span></a>
             </li>
 
          
@@ -276,10 +282,10 @@
                      <div id="successMsgPass"></div>
                      <div id="errorsDeprtPass"></div>
                      <div class="form-group">
-                        <input type="text" name="oldpassword" id="oldpassword" class="form-control form-control-user" placeholder="Enter Old Password!" required/>
+                        <input type="password" name="oldpassword" id="oldpassword" class="form-control form-control-user" placeholder="Enter Old Password!" required/>
                      </div>
                      <div class="form-group">
-                        <input type="text" name="newpassword" id="newpassword" class="form-control form-control-user" placeholder="Enter New Password!" required/>
+                        <input type="password" name="newpassword" id="newpassword" class="form-control form-control-user" placeholder="Enter New Password!" required/>
                      </div>
                   </div>
                   <div class="modal-footer">

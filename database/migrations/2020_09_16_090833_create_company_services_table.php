@@ -23,8 +23,8 @@ class CreateCompanyServicesTable extends Migration
 				$table->float('price', 8, 2);
 				$table->tinyInteger('status');
 				$table->timestamps();
-				$table->foreign('user_id')->references('id')->on('users');
-				$table->foreign('service_id')->references('id')->on('services');
+				$table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
+				$table->foreign('service_id')->references('id')->on('services')->onDelete('cascade');
 			});
 		}
     }

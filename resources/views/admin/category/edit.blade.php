@@ -28,7 +28,24 @@
 									</h5>
 									<form action="{{route('category.update')}}" method="post" class="user" id="edit_genre_form" enctype="multipart/form-data">
 										@csrf
-											<input type="hidden" name="edit_record_id" value="{{$record->id}}">	
+											<input type="hidden" name="edit_record_id" value="{{$record->id}}">										
+											<div class="row">
+												<div class="col-lg-4 col-md-6 col-12">
+													<div class="form-group">
+														<label>Parent Category<span class="required">*</span></label>
+														<select name="parent_id" id="parent_id" class="form-control form-control-user" required>
+															<option value="">Select Parent Category</option>
+															<option value="0" {{ old('parent_id', $record->parent_id) == 0 ? 'selected' : ''}}>Root</option>
+															@foreach($categorylist as $row)
+															<option value="{{$row->id}}" {{ old('parent_id', $record->parent_id) == $row->id ? 'selected' : ''}}>{{$row->name}}</option>
+															@endforeach
+														</select>
+														@if ($errors->has('parent_id'))
+															<span class="text-danger">{{ $errors->first('parent_id') }}</span>
+														@endif
+													</div>
+												</div>
+											</div>		
 											<div class="row">
 												<div class="col-lg-4 col-md-6 col-12">
 													<div class="form-group">
@@ -50,9 +67,18 @@
 														@endif
 													</div>
 												</div>
-												
-											
-											</div>
+											</div>										
+											<div class="row">
+												<div class="col-lg-4 col-md-6 col-12">
+													<div class="form-group">
+														<label>Sorting Order<span class="required">*</span></label>
+														<input type="text" name="sort_order" id="sort_order" value="{{old('sort_order', $record->sort_order)}}" class="form-control form-control-user" required />
+														@if ($errors->has('sort_order'))
+															<span class="text-danger">{{ $errors->first('sort_order') }}</span>
+														@endif
+													</div>
+												</div>
+											</div>	
 							
 											<div class="mt-1 mb-1">
 												<div class="text-left d-print-none mt-4">

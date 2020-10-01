@@ -65,7 +65,9 @@ class AdminDashboardController extends Controller
 					$image_resize = Image::make($file)->resize( null, 90, function ( $constraint ) {
                                                                         $constraint->aspectRatio();
                                                                     })->encode( $extension ); 
+					//dd($image_resize);												
 					$users_details = User_detail::where('user_id' , Auth::user()->id)->first();
+					
 					if($users_details == null)//if doesn't exist: create
 					{
 						$users_details = User_detail::create([
@@ -75,6 +77,7 @@ class AdminDashboardController extends Controller
 							'status' => 1,
 							'created_at' => date('Y-m-d H:i:s')
 						]); 
+						//dd($users_details);
 					}
 					else //if exist: update
 					{

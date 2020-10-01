@@ -26,7 +26,7 @@ class CreateUserDetailsTable extends Migration
 				$table->binary('profile_picture');
 				$table->tinyInteger('status');
 				$table->timestamps();
-				$table->foreign('user_id')->references('id')->on('users');
+				$table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
 				$table->foreign('state_id')->references('id')->on('states');
 				$table->foreign('country_id')->references('id')->on('countries');
 			});

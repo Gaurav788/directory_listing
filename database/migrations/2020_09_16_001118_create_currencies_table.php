@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreatePaymentGatewaysTable extends Migration
+class CreateCurrenciesTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,19 +13,14 @@ class CreatePaymentGatewaysTable extends Migration
      */
     public function up()
     {
-        Schema::create('payment_gateways', function (Blueprint $table) {
+		if (!Schema::hasTable('user_details')) {
+			Schema::create('currencies', function (Blueprint $table) {
 				$table->bigIncrements('id');
 				$table->string('name');
-				$table->text('description');
-				$table->text('api_key');
-				$table->text('secret_key');
-				$table->text('sandbox_url');
-				$table->text('live_url');
-				$table->string('email');
-				$table->string('payment_mode');
 				$table->tinyInteger('status');
 				$table->timestamps();
-        });
+			});
+		}
     }
 
     /**
@@ -35,6 +30,6 @@ class CreatePaymentGatewaysTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('payment_gateways');
+        Schema::dropIfExists('currencies');
     }
 }

@@ -12,10 +12,14 @@ class Membership_plan extends Model
        	'name',
        	'details',
        	'price',
-       	'currency',
+       	'currency_id',
 		'duration',
 		'status',
 	    'created_at',
 	    'updated_at',
     ];
+    public function currency()
+	{
+		return $this->belongsTo(Currency::class);
+	}
 }

@@ -16,8 +16,10 @@ class CreateCategoriesTable extends Migration
 		if (!Schema::hasTable('categories')) {
 			Schema::create('categories', function (Blueprint $table) {
 				$table->bigIncrements('id');
+				$table->unsignedBigInteger('parent_id');
 				$table->string('name');
 				$table->text('description');
+				$table->tinyInteger('sort_order');
 				$table->tinyInteger('status');
 				$table->timestamps();
 			});

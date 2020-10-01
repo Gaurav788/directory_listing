@@ -20,8 +20,8 @@ class CreateCompanyPaymentMethodsTable extends Migration
 				$table->unsignedBigInteger('payment_method_id');
 				$table->tinyInteger('status');
 				$table->timestamps();
-				$table->foreign('user_id')->references('id')->on('users');
-				$table->foreign('payment_method_id')->references('id')->on('payment_methods');
+				$table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
+				$table->foreign('payment_method_id')->references('id')->on('payment_methods')->onDelete('cascade');
 			});
 		}
     }

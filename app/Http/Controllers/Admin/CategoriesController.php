@@ -16,13 +16,16 @@ class CategoriesController extends Controller
     }
 
     public function add_form(){
-    	return view('admin.category.add');
+            $categorylist = Category::where('status', 1)->get();
+    	return view('admin.category.add', compact('categorylist'));
     }
 
 
     public function create_record(Request $request){
 		$request->validate([
+                'parent_id' => 'required',
                 'name' => 'required|unique:categories',
+                'sort_order' => 'required|unique:categories',
                 'description' => 'required|min:5'
             ], [
                 'name.required' => 'Name is required',
@@ -33,7 +36,9 @@ class CategoriesController extends Controller
         	$postData = $request->all();
             //dd($postData); 
         	$data = array(
+        			'parent_id' => $postData['parent_id'],
         			'name' => $postData['name'],
+        			'sort_order' => $postData['sort_order'],
         			'description' => $postData['description'],
 					'status' => 1,
         			'created_at' => date('Y-m-d H:i:s')
@@ -54,14 +59,17 @@ class CategoriesController extends Controller
 
     public function edit_form($id){
     	$record = Category::find($id);
-    	return view('admin.category.edit', compact('record'));
+        $categorylist = Category::where('status', 1)->get();
+    	return view('admin.category.edit', compact('record', 'categorylist'));
     }
 
     public function update_record(Request $request){
         $postData = $request->all();
 		$id =$postData['edit_record_id'];
 		$request->validate([
+                'parent_id' => 'required',
                 'name' => 'required|unique:categories,name,'.$id,
+                'sort_order' => 'required|unique:categories,sort_order,'.$id,
                 'description' => 'required|min:5'
             ], [
                 'name.required' => 'Name is required',
@@ -71,8 +79,10 @@ class CategoriesController extends Controller
     	try {
             //dd($postData);
         	$data = array(
+        		'parent_id' => $postData['parent_id'],
         		'name' => $postData['name'],
         		'description' => $postData['description'],
+        		'sort_order' => $postData['sort_order'],
         		'updated_at' => date('Y-m-d H:i:s')
         	);
         	

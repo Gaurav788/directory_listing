@@ -6,6 +6,7 @@ use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Passport\HasApiTokens;
+use Illuminate\Database\Eloquent\Model;
 
 class User extends Authenticatable
 {
@@ -49,12 +50,13 @@ class User extends Authenticatable
 	
     public $timestamps = false;
 	
-	public function roles()
+	public function role()
 	{
-	   return $this->belongsTo('App\Role');
+	   return $this->belongsTo(Role::class);
 	}
-	public function user_details()
+	public function user_detail()
 	{
-	   return $this->belongsTo('App\User_detail');
+	   return $this->hasOne(User_detail::class);
 	}
+	
 }

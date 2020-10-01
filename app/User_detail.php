@@ -22,8 +22,8 @@ class User_detail extends Model
 	    		'created_at',
 	    		'updated_at',
     ];
-    public function users()
+    public function user()
 	{
-		return $this->hasOne('App\User');
+		return $this->belongsTo(User::class);
 	}
 }

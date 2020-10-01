@@ -21,7 +21,7 @@ class CreateCompanyActivePlansTable extends Migration
 				$table->tinyInteger('status');
 				$table->date('expiry_date');
 				$table->timestamps();
-				$table->foreign('user_id')->references('id')->on('users');
+				$table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
 				$table->foreign('membership_plan_id')->references('id')->on('membership_plans');
 			});
 		}

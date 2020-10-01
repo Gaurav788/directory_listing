@@ -22,7 +22,7 @@ class CreateCompanyRepliesTable extends Migration
 				$table->mediumText('reply');
 				$table->tinyInteger('status');
 				$table->timestamps();
-				$table->foreign('company_review_id')->references('id')->on('company_reviews');
+				$table->foreign('company_review_id')->references('id')->on('company_reviews')->onDelete('cascade');
 				$table->foreign('reply_by')->references('id')->on('users');
 				$table->foreign('reply_to')->references('id')->on('users');
 			});

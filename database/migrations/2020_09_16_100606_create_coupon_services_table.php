@@ -20,8 +20,8 @@ class CreateCouponServicesTable extends Migration
 				$table->unsignedBigInteger('service_id');
 				$table->tinyInteger('status');
 				$table->timestamps();
-				$table->foreign('company_coupon_id')->references('id')->on('company_coupons');
-				$table->foreign('service_id')->references('id')->on('services');
+				$table->foreign('company_coupon_id')->references('id')->on('company_coupons')->onDelete('cascade');
+				$table->foreign('service_id')->references('id')->on('services')->onDelete('cascade');
 			});
 		}
     }

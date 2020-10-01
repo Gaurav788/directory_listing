@@ -19,8 +19,8 @@ class CreateBlogPostTagsTable extends Migration
 				$table->unsignedBigInteger('blog_post_id');
 				$table->unsignedBigInteger('tag_id');
 				$table->timestamps();
-				$table->foreign('blog_post_id')->references('id')->on('blog_posts');
-				$table->foreign('tag_id')->references('id')->on('tags');
+				$table->foreign('blog_post_id')->references('id')->on('blog_posts')->onDelete('cascade');
+				$table->foreign('tag_id')->references('id')->on('tags')->onDelete('cascade');
 			});
 		}
     }

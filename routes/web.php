@@ -21,6 +21,8 @@ Route::get('/home', 'HomeController@index')->name('home');
 Route::get('/admin/dashboard', 'Admin\AdminDashboardController@index')->name('admin.dashboard')->middleware('admin');
 Route::get('/user/dashboard', 'User\UserDashboardController@index')->name('user.dashboard')->middleware('user');
 
+Route::get('/redirect', 'SocialAuthLinkedinController@redirect');
+Route::get('/callback', 'SocialAuthLinkedinController@callback');
 
 
 /*****************
@@ -33,6 +35,16 @@ Admin panel routes
 Route::post('admin/details/update', 'Admin\AdminDashboardController@update_record')->name('admin.details.update')->middleware('admin');
 Route::post('admin/password/update', 'Admin\AdminDashboardController@update_password')->name('admin.password.update')->middleware('admin');
 
+//Manage Users Routes
+
+Route::get('admin/users/list', 'Admin\UserManageController@list_records')->name('users.list')->middleware('admin');
+Route::get('admin/user/status/update', 'Admin\UserManageController@change_status')->name('user.status')->middleware('admin');
+Route::get('admin/user/edit/{id}', 'Admin\UserManageController@edit_form')->name('user.edit')->middleware('admin');
+Route::post('admin/user/update', 'Admin\UserManageController@update_record')->name('user.update')->middleware('admin');
+Route::get('admin/user/changepassword/{id}', 'Admin\UserManageController@change_password')->name('user.changepassword')->middleware('admin');
+Route::post('admin/user/updatepassword', 'Admin\UserManageController@update_password')->name('user.updatepassword')->middleware('admin');
+Route::post('admin/user/del', 'Admin\UserManageController@del_record')->name('user.del')->middleware('admin');
+
 //Categories Routes
 
 Route::get('admin/categories/list', 'Admin\CategoriesController@list_records')->name('categories.list')->middleware('admin');
@@ -42,6 +54,26 @@ Route::get('admin/category/edit/{id}', 'Admin\CategoriesController@edit_form')->
 Route::post('admin/category/update', 'Admin\CategoriesController@update_record')->name('category.update')->middleware('admin');
 Route::get('admin/category/status/update', 'Admin\CategoriesController@change_status')->name('category.status')->middleware('admin');
 Route::post('admin/category/del', 'Admin\CategoriesController@del_record')->name('category.del')->middleware('admin');
+
+//Subcategories Routes
+
+Route::get('admin/subcategories/list', 'Admin\SubCategoriesController@list_records')->name('subcategories.list')->middleware('admin');
+Route::get('admin/subcategory/add', 'Admin\SubCategoriesController@add_form')->name('subcategory.add')->middleware('admin');
+Route::post('admin/subcategory/create', 'Admin\SubCategoriesController@create_record')->name('subcategory.create')->middleware('admin');
+Route::get('admin/subcategory/edit/{id}', 'Admin\SubCategoriesController@edit_form')->name('subcategory.edit')->middleware('admin');
+Route::post('admin/subcategory/update', 'Admin\SubCategoriesController@update_record')->name('subcategory.update')->middleware('admin');
+Route::get('admin/subcategory/status/update', 'Admin\SubCategoriesController@change_status')->name('subcategory.status')->middleware('admin');
+Route::post('admin/subcategory/del', 'Admin\SubCategoriesController@del_record')->name('subcategory.del')->middleware('admin');
+
+//Currencies Routes
+
+Route::get('admin/currencies/list', 'Admin\CurrencyController@list_records')->name('currencies.list')->middleware('admin');
+Route::get('admin/currency/add', 'Admin\CurrencyController@add_form')->name('currency.add')->middleware('admin');
+Route::post('admin/currency/create', 'Admin\CurrencyController@create_record')->name('currency.create')->middleware('admin');
+Route::get('admin/currency/edit/{id}', 'Admin\CurrencyController@edit_form')->name('currency.edit')->middleware('admin');
+Route::post('admin/currency/update', 'Admin\CurrencyController@update_record')->name('currency.update')->middleware('admin');
+Route::get('admin/currency/status/update', 'Admin\CurrencyController@change_status')->name('currency.status')->middleware('admin');
+Route::post('admin/currency/del', 'Admin\CurrencyController@del_record')->name('currency.del')->middleware('admin');
 
 //Tags Routes
 
