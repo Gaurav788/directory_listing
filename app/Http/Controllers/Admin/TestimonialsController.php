@@ -9,8 +9,6 @@ use DB;
 
 class TestimonialsController extends Controller
 {
-    //
-    //
     public function list_records(Request $request){
         $data = Testimonial::get();
         return view('admin.testimonials.list', compact('data'));
@@ -27,12 +25,9 @@ class TestimonialsController extends Controller
 
     public function change_status(Request $request){
         $getData = $request->all();
-
         $testimonial = Testimonial::find($getData['g']);
         $testimonial->status = $getData['s'];
         $testimonial->save();
-
         return redirect()->back()->with('status', 'success')->with('message', 'Testimonial Status Changed Successfully');
-
     }
 }

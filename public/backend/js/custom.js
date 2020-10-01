@@ -8,6 +8,14 @@ jQuery( document ).ready(function() {
 	});
 	jQuery('#artistlisting-datatable').DataTable();
 
+	jQuery('#radioBtn a').on('click', function(){
+    var sel = jQuery(this).data('title');
+    var tog = jQuery(this).data('toggle');
+    jQuery('#'+tog).prop('value', sel);
+    
+    jQuery('a[data-toggle="'+tog+'"]').not('[data-title="'+sel+'"]').removeClass('active').addClass('notActive');
+    jQuery('a[data-toggle="'+tog+'"][data-title="'+sel+'"]').removeClass('notActive').addClass('active');
+	});
    /* Profile Post Request Ajax Code*/
    jQuery('#modalProfileSubmit').on('submit', function(e) {
 	e.preventDefault();

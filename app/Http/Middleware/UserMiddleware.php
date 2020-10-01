@@ -16,11 +16,12 @@ class UserMiddleware
      */
     public function handle($request, Closure $next)
     {
-		if(auth::check() && Auth::user()->role_id == 2){
+		if(auth::check() && Auth::user()->role_id == 2 && Auth::user()->status == 1){
 			return $next($request);
 		}
 		else {
-			return redirect()->route('login');
+			Auth::logout();
+			return redirect()->route('login')->with('status', 'error')->with('message', 'Your account has been blocked or disabled by administrator!');
 		}
     }
 }

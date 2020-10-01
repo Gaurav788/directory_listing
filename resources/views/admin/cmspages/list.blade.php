@@ -27,7 +27,6 @@
               <div class="table-responsive">
               <table id="artistlisting-datatable" class="table table-hover dt-responsive nowrap">
                     <thead>
-
                         <tr>
                             <th>S.No</th>
                             <th>Title</th>
@@ -41,7 +40,7 @@
                     </thead>
                     <tbody>
                       <?php $i=1; ?>
-                        @forelse($cmspages as $row)
+                        @foreach($cmspages as $row)
                         <tr>
                             <td>{{$i}}</td>
                             <td>{{$row->title}}</td>
@@ -63,13 +62,21 @@
                             </a>      
                             </td>
                         </tr>
-                      <?php $i++; ?>
-                        @empty
-                       <tr>
-                            <td colspan="9" class="text-center">No record found</td>
-                        </tr>
-                     @endforelse 
+						<?php $i++; ?>
+						@endforeach 
                     </tbody>
+                    <tfoot>
+                        <tr>
+                            <th>S.No</th>
+                            <th>Title</th>
+                            <th>Description</th>
+                            <th>Meta Title</th>
+                            <th>Meta Keyword</th>
+                            <th>Status</th>
+                            <th>Date</th>
+                            <th>Action</th>  
+                        </tr>
+                    </tfoot>
                 </table>
               </div>
           </div>

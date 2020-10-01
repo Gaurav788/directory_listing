@@ -6,5 +6,5 @@ use Illuminate\Database\Eloquent\Model;
 
 class Company_photo extends Model
 {
-    //
+	
 }

@@ -9,7 +9,6 @@ use DB;
 
 class ContactUsController extends Controller
 {
-    //
     public function list_records(Request $request){
         $data = Contact::get();
         return view('admin.contactus.list', compact('data'));
@@ -24,33 +23,27 @@ class ContactUsController extends Controller
         $postData = $request->all();
 		$id =$postData['edit_record_id'];
 		$request->validate([
-                'fromemail' => 'required|email',
-                'subject' => 'required',
-                'reply_message' => 'required'
-            ], [
-                'fromemail.required' => 'From email is required',
-                'subject.required' => 'You can not left subject empty. Please add someting to describe your reply',
-                'reply_message.required' => 'You can not left reply message empty. Please add someting to your reply'
-            ]);
+			'fromemail' => 'required|email',
+            'subject' => 'required',
+            'reply_message' => 'required'
+        ], [
+            'fromemail.required' => 'From email is required',
+            'subject.required' => 'You can not left subject empty. Please add someting to describe your reply',
+            'reply_message.required' => 'You can not left reply message empty. Please add someting to your reply'
+        ]);
     	DB::beginTransaction();
     	try {
-            //dd($postData);
         	$data = array(
-        			'reply_subject' => $postData['subject'],
-        			'reply_message' => $postData['reply_message'],
-        			'replied_on' => date('Y-m-d H:i:s'),
-        			'updated_at' => date('Y-m-d H:i:s')
-
-        	);
-        	
+				'reply_subject' => $postData['subject'],
+        		'reply_message' => $postData['reply_message'],
+        		'replied_on' => date('Y-m-d H:i:s'),
+        		'updated_at' => date('Y-m-d H:i:s')
+        	);        	
 			$record = Contact::where('id', $postData['edit_record_id'])->update($data);
-			DB::commit();
-        	
+			DB::commit();        	
         	return redirect('admin/contactus/list')->with('status', 'success')->with('message', 'Reply Updated Successfully');
-        	
         } catch ( \Exception $e ) {
             DB::rollback();
-            //dd($e);
             return redirect()->back()->with('status', 'error')->with('message', $e->getMessage());
         }
     }

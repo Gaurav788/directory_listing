@@ -78,7 +78,24 @@
 														@endif
 													</div>
 												</div>
-											</div>						
+											</div>								
+											<div class="row">  
+												<div class="col-lg-4 col-md-6 col-12">
+													<div class="form-group">
+														<label>Status<span class="required">*</span></label>
+														<div class="input-group">
+															<div id="radioBtn" class="btn-group">
+																<a class="btn btn-success btn-sm active {{ old('status') == '1' ? 'active' : 'notActive'}}" data-toggle="status" data-title="1">Enabled</a>
+																<a class="btn btn-danger btn-sm {{ old('status') == '0' ? 'active' : 'notActive'}}" data-toggle="status" data-title="0">Disabled</a>
+															</div>
+															<input type="hidden" name="status" id="status" value="1">
+														</div>
+														@if ($errors->has('status'))
+															<span class="text-danger">{{ $errors->first('status') }}</span>
+														@endif
+													</div>
+												</div>									
+											</div>							
 											<div class="mt-1 mb-1">
 												<div class="text-left d-print-none mt-4">
 													<button type="submit" id="save-category-btn" class="btn btn-primary">Save</button>
@@ -93,6 +110,9 @@
 						<!-- end row -->
 					</div> 
 					<!-- container-fluid -->
+					<style>
+					
+					</style>
 @endsection
 @section('scripts')
     <script src="https://cdn.tiny.cloud/1/g2adjiwgk9zbu2xzir736ppgxzuciishwhkpnplf46rni4g8/tinymce/5/tinymce.min.js" referrerpolicy="origin"></script>

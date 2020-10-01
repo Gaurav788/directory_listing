@@ -34,8 +34,8 @@
 								</tr>
 							</thead>
 							<tbody>
-							  <?php $i=1; ?>
-								@forelse($data as $row)
+								<?php $i=1; ?>
+								@foreach($data as $row)
 								<tr>
 									<td>{{$i}}</td>
 									<td>
@@ -62,13 +62,21 @@
 									</a>    
 									</td>
 								</tr>
-							  <?php $i++; ?>
-								@empty
-							   <tr>
-									<td colspan="6" class="text-center">No record found</td>
-								</tr>
-							 @endforelse 
+								<?php $i++; ?>
+								@endforeach
 							</tbody>
+							<tfoot>
+								<tr>
+									<th>S.No</th>
+									<th>Image</th>
+									<th>Person's Details</th>
+									<th>Role</th>
+									<th>From</th>
+									<th>Status</th>
+									<th>Date</th>
+									<th>Action</th>
+								</tr>
+							</tfoot>
 						</table>
 					</div>
 				</div>

@@ -6,13 +6,12 @@ use Illuminate\Database\Eloquent\Model;
 
 class Currency extends Model
 {
-    //
     public $timestamps = false;
     protected $fillable = [
-       			'name',
-				'status',
-	    		'created_at',
-	    		'updated_at',
+       	'name',
+		'status',
+	    'created_at',
+	    'updated_at',
     ];
     public function membership_plan()
 	{

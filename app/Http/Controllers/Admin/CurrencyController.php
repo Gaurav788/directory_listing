@@ -9,33 +9,29 @@ use DB;
 
 class CurrencyController extends Controller
 {
-    //
     public function list_records(Request $request){
-            $data = Currency::get();
+        $data = Currency::get();
         return view('admin.currencies.list', compact('data'));
     }
 
     public function add_form(){
-		
     	return view('admin.currencies.add');
     }
 
-
     public function create_record(Request $request){
 		$request->validate([
-                'name' => 'required|unique:currencies',
-            ], [
-                'name.required' => 'Name is required'
-            ]);
+            'name' => 'required|unique:currencies',
+            'status' => 'required'
+        ], [
+            'name.required' => 'Name is required'
+        ]);
     	DB::beginTransaction();
     	try {
         	$postData = $request->all();
-            //dd($postData); 
         	$data = array(
-        			'name' => $postData['name'],
-					'status' => 1,
-        			'created_at' => date('Y-m-d H:i:s')
-
+				'name' => $postData['name'],
+				'status' => $postData['status'],
+        		'created_at' => date('Y-m-d H:i:s')
         	);
 			$record = Currency::create($data);
 			DB::commit();
@@ -44,9 +40,7 @@ class CurrencyController extends Controller
         	}
         } catch ( \Exception $e ) {
             DB::rollback();
-            //dd($e);
             return redirect()->back()->with('status', 'error')->with('message', $e->getMessage());
-            //return ['status' => 400, 'message' => $e->getMessage()];
         }
     }
 
@@ -59,26 +53,23 @@ class CurrencyController extends Controller
         $postData = $request->all();
 		$id =$postData['edit_record_id'];
 		$request->validate([
-                'name' => 'required|unique:currencies,name,'.$id
-            ], [
-                'name.required' => 'Name is required',
-            ]);
+            'name' => 'required|unique:currencies,name,'.$id,
+            'status' => 'required'
+        ], [
+            'name.required' => 'Name is required',
+        ]);
     	DB::beginTransaction();
     	try {
-            //dd($postData);
         	$data = array(
         		'name' => $postData['name'],
+        		'status' => $postData['status'],
         		'updated_at' => date('Y-m-d H:i:s')
-        	);
-        	
+        	);        	
 			$record = Currency::where('id', $postData['edit_record_id'])->update($data);
-			DB::commit();
-        	
-        	return redirect('admin/currencies/list')->with('status', 'success')->with('message', 'Currency Updated Successfully');
-        	
+			DB::commit();        	
+        	return redirect('admin/currencies/list')->with('status', 'success')->with('message', 'Currency Updated Successfully');        	
         } catch ( \Exception $e ) {
             DB::rollback();
-            //dd($e);
             return redirect()->back()->with('status', 'error')->with('message', $e->getMessage());
         }
     }
@@ -94,12 +85,9 @@ class CurrencyController extends Controller
 
     public function change_status(Request $request){
         $getData = $request->all();
-
         $currencies = Currency::find($getData['g']);
         $currencies->status = $getData['s'];
         $currencies->save();
-
         return redirect()->back()->with('status', 'success')->with('message', 'Currency Status Changed Successfully');
-
     }
 }

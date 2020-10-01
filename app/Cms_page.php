@@ -6,7 +6,6 @@ use Illuminate\Database\Eloquent\Model;
 
 class Cms_page extends Model
 {
-    //
     public $timestamps = false;
     protected $fillable = [
        	'title',

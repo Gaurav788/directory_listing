@@ -9,10 +9,8 @@ use DB;
 
 class CmsPagesController extends Controller
 {
-    //
-
     public function list_records(Request $request){
-            $cmspages = Cms_page::get();
+        $cmspages = Cms_page::get();
         return view('admin.cmspages.list', compact('cmspages'));
     }
 
@@ -20,40 +18,38 @@ class CmsPagesController extends Controller
     	return view('admin.cmspages.add');
     }
 
-
     public function create_record(Request $request){
 		$request->validate([
-                'title' => 'required|unique:cms_pages',
-                'slug' => 'required|min:5',
-                'short_description' => 'required',
-                'description' => 'required',
-                'meta_title' => 'required',
-                'meta_keyword' => 'required',
-                'meta_content' => 'required'
-            ], [
-                'title.required' => 'Title is required',
-                'slug.required' => 'Slug is required',
-                'short_description.required' => 'Short description is required',
-                'description.required' => 'You can not left description empty. Please add someting to describe page',
-                'meta_title.required' => 'You can not left meta title empty.',
-                'meta_keyword.required' => 'You can not left meta keyword empty.',
-                'meta_content.required' => 'You can not left meta content empty.'
-            ]);
+            'title' => 'required|unique:cms_pages',
+            'slug' => 'required|min:5',
+            'short_description' => 'required',
+            'description' => 'required',
+            'meta_title' => 'required',
+            'meta_keyword' => 'required',
+            'meta_content' => 'required',
+            'status' => 'required'
+        ], [
+            'title.required' => 'Title is required',
+            'slug.required' => 'Slug is required',
+            'short_description.required' => 'Short description is required',
+            'description.required' => 'You can not left description empty. Please add someting to describe page',
+            'meta_title.required' => 'You can not left meta title empty.',
+            'meta_keyword.required' => 'You can not left meta keyword empty.',
+            'meta_content.required' => 'You can not left meta content empty.'
+        ]);
     	DB::beginTransaction();
     	try {
         	$postData = $request->all();
-            //dd($postData); 
         	$data = array(
-        			'title' => $postData['title'],
-        			'slug' => $postData['slug'],
-        			'short_description' => $postData['short_description'],
-        			'description' => $postData['description'],
-        			'meta_title' => $postData['meta_title'],
-        			'meta_keyword' => $postData['meta_keyword'],
-        			'meta_content' => $postData['meta_content'],
-					'status' => 1,
-        			'created_at' => date('Y-m-d H:i:s')
-
+        		'title' => $postData['title'],
+        		'slug' => $postData['slug'],
+        		'short_description' => $postData['short_description'],
+        		'description' => $postData['description'],
+        		'meta_title' => $postData['meta_title'],
+        		'meta_keyword' => $postData['meta_keyword'],
+        		'meta_content' => $postData['meta_content'],
+				'status' => $postData['status'],
+        		'created_at' => date('Y-m-d H:i:s')
         	);
 			$record = Cms_page::create($data);
 			DB::commit();
@@ -61,10 +57,8 @@ class CmsPagesController extends Controller
         		return redirect('admin/cmspages/list')->with('status', 'success')->with('message', 'CMS Page Created Successfully');
         	}
         } catch ( \Exception $e ) {
-            DB::rollback();
-            
+            DB::rollback();            
             return redirect()->back()->with('status', 'error')->with('message', $e->getMessage());
-            //return ['status' => 400, 'message' => $e->getMessage()];
         }
     }
 
@@ -83,7 +77,8 @@ class CmsPagesController extends Controller
             'description' => 'required',
             'meta_title' => 'required',
             'meta_keyword' => 'required',
-            'meta_content' => 'required'
+            'meta_content' => 'required',
+            'status' => 'required'
         ], [
             'title.required' => 'Title is required',
             'slug.required' => 'Slug is required',
@@ -95,7 +90,6 @@ class CmsPagesController extends Controller
         ]);
     	DB::beginTransaction();
     	try {
-            //dd($postData);
         	$data = array(
         		'title' => $postData['title'],
         		'slug' => $postData['slug'],
@@ -104,18 +98,15 @@ class CmsPagesController extends Controller
         		'meta_title' => $postData['meta_title'],
         		'meta_keyword' => $postData['meta_keyword'],
         		'meta_content' => $postData['meta_content'],
+				'status' => $postData['status'],
         		'updated_at' => date('Y-m-d H:i:s')
 
-        	);
-        	
+        	);        	
 			$record = Cms_page::where('id', $postData['edit_record_id'])->update($data);
-			DB::commit();
-        	
-        	return redirect('admin/cmspages/list')->with('status', 'success')->with('message', 'CMS Page Updated Successfully');
-        	
+			DB::commit();        	
+        	return redirect('admin/cmspages/list')->with('status', 'success')->with('message', 'CMS Page Updated Successfully');        	
         } catch ( \Exception $e ) {
             DB::rollback();
-            //dd($e);
             return redirect()->back()->with('status', 'error')->with('message', $e->getMessage());
         }
     }
@@ -131,12 +122,9 @@ class CmsPagesController extends Controller
 
     public function change_status(Request $request){
         $getData = $request->all();
-
         $cmspage = Cms_page::find($getData['g']);
         $cmspage->status = $getData['s'];
         $cmspage->save();
-
         return redirect()->back()->with('status', 'success')->with('message', 'CMS Page Status Changed Successfully');
-
     }
 }

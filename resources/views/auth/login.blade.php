@@ -7,6 +7,16 @@
             <div class="card">
                 <div class="card-header">{{ __('Login') }}</div>
 
+					<div class="flash-message">
+						@if(session()->has('status'))
+							@if(session()->get('status') == 'error')
+								<div class="alert alert-danger  alert-dismissible">
+							<a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+									{{ session()->get('message') }}
+								</div>
+							@endif
+						@endif
+					</div> <!-- end .flash-message -->
                 <div class="card-body">
                     <form method="POST" action="{{ route('login') }}">
                         @csrf

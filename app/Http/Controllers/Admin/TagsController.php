@@ -9,7 +9,6 @@ use DB;
 
 class TagsController extends Controller
 {
-    //
     public function list_records(Request $request){
             $data = Tag::get();
         return view('admin.tags.list', compact('data'));
@@ -19,22 +18,20 @@ class TagsController extends Controller
     	return view('admin.tags.add');
     }
 
-
     public function create_record(Request $request){
 		$request->validate([
-                'name' => 'required|unique:tags',
-            ], [
-                'name.required' => 'Name is required',
-            ]);
+            'name' => 'required|unique:tags',
+            'status' => 'required'
+        ], [
+            'name.required' => 'Name is required',
+        ]);
     	DB::beginTransaction();
     	try {
         	$postData = $request->all();
-            //dd($postData); 
         	$data = array(
-        			'name' => $postData['name'],
-					'status' => 1,
-        			'created_at' => date('Y-m-d H:i:s')
-
+        		'name' => $postData['name'],
+				'status' => $postData['status'],
+        		'created_at' => date('Y-m-d H:i:s')
         	);
 			$record = Tag::create($data);
 			DB::commit();
@@ -43,9 +40,7 @@ class TagsController extends Controller
         	}
         } catch ( \Exception $e ) {
             DB::rollback();
-            dd($e);
             return redirect()->back()->with('status', 'error')->with('message', $e->getMessage());
-            //return ['status' => 400, 'message' => $e->getMessage()];
         }
     }
 
@@ -58,27 +53,23 @@ class TagsController extends Controller
         $postData = $request->all();
 		$id =$postData['edit_record_id'];
 		$request->validate([
-                'name' => 'required|unique:tags,name,'.$id,
-            ], [
-                'name.required' => 'Name is required',
-            ]);
+            'name' => 'required|unique:tags,name,'.$id,
+            'status' => 'required'
+        ], [
+            'name.required' => 'Name is required',
+        ]);
     	DB::beginTransaction();
     	try {
-            //dd($postData);
-        	$data = array(
-        			'name' => $postData['name'],
-        			'updated_at' => date('Y-m-d H:i:s')
-
-        	);
-        	
+			$data = array(
+       			'name' => $postData['name'],
+				'status' => $postData['status'],
+       			'updated_at' => date('Y-m-d H:i:s')
+        	);    	
 			$record = Tag::where('id', $postData['edit_record_id'])->update($data);
 			DB::commit();
-        	
         	return redirect('admin/tags/list')->with('status', 'success')->with('message', 'Tag Updated Successfully');
-        	
         } catch ( \Exception $e ) {
             DB::rollback();
-            //dd($e);
             return redirect()->back()->with('status', 'error')->with('message', $e->getMessage());
         }
     }
@@ -94,12 +85,9 @@ class TagsController extends Controller
 
     public function change_status(Request $request){
         $getData = $request->all();
-
         $tag = Tag::find($getData['g']);
         $tag->status = $getData['s'];
         $tag->save();
-
         return redirect()->back()->with('status', 'success')->with('message', 'Tag Status Changed Successfully');
-
     }
 }

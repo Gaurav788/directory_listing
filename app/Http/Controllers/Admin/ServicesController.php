@@ -9,9 +9,8 @@ use DB;
 
 class ServicesController extends Controller
 {
-    //
     public function list_records(Request $request){
-            $data = Service::get();
+        $data = Service::get();
         return view('admin.service.list', compact('data'));
     }
 
@@ -19,22 +18,20 @@ class ServicesController extends Controller
     	return view('admin.service.add');
     }
 
-
     public function create_record(Request $request){
 		$request->validate([
-                'name' => 'required|unique:services',
-            ], [
-                'name.required' => 'Name is required'
-            ]);
+            'name' => 'required|unique:services',
+            'status' => 'required'
+        ], [
+            'name.required' => 'Name is required'
+        ]);
     	DB::beginTransaction();
     	try {
         	$postData = $request->all();
-            //dd($postData); 
         	$data = array(
-        			'name' => $postData['name'],
-					'status' => 1,
-        			'created_at' => date('Y-m-d H:i:s')
-
+        		'name' => $postData['name'],
+				'status' => $postData['status'],
+        		'created_at' => date('Y-m-d H:i:s')
         	);
 			$record = Service::create($data);
 			DB::commit();
@@ -43,9 +40,7 @@ class ServicesController extends Controller
         	}
         } catch ( \Exception $e ) {
             DB::rollback();
-            dd($e);
             return redirect()->back()->with('status', 'error')->with('message', $e->getMessage());
-            //return ['status' => 400, 'message' => $e->getMessage()];
         }
     }
 
@@ -58,27 +53,23 @@ class ServicesController extends Controller
         $postData = $request->all();
 		$id =$postData['edit_record_id'];
 		$request->validate([
-                'name' => 'required|unique:services,name,'.$id,
-            ], [
-                'name.required' => 'Name is required',
-            ]);
+            'name' => 'required|unique:services,name,'.$id,
+            'status' => 'required'
+        ], [
+            'name.required' => 'Name is required',
+        ]);
     	DB::beginTransaction();
     	try {
-            //dd($postData);
         	$data = array(
-        			'name' => $postData['name'],
-        			'updated_at' => date('Y-m-d H:i:s')
-
-        	);
-        	
+        		'name' => $postData['name'],
+				'status' => $postData['status'],
+        		'updated_at' => date('Y-m-d H:i:s')
+        	);  	
 			$record = Service::where('id', $postData['edit_record_id'])->update($data);
-			DB::commit();
-        	
-        	return redirect('admin/services/list')->with('status', 'success')->with('message', 'Service Updated Successfully');
-        	
+			DB::commit();        	
+        	return redirect('admin/services/list')->with('status', 'success')->with('message', 'Service Updated Successfully');        	
         } catch ( \Exception $e ) {
             DB::rollback();
-            //dd($e);
             return redirect()->back()->with('status', 'error')->with('message', $e->getMessage());
         }
     }
@@ -94,12 +85,9 @@ class ServicesController extends Controller
 
     public function change_status(Request $request){
         $getData = $request->all();
-
         $service = Service::find($getData['g']);
         $service->status = $getData['s'];
         $service->save();
-
         return redirect()->back()->with('status', 'success')->with('message', 'Service Status Changed Successfully');
-
     }
 }

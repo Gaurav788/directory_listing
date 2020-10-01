@@ -9,7 +9,6 @@ use DB;
 
 class UserManageController extends Controller
 {
-    //
     public function list_records(Request $request){
         $data = User::with('role', 'user_detail')->whereIn('role_id', [2,3])->get();
         return view('admin.users.list', compact('data'));
@@ -34,7 +33,6 @@ class UserManageController extends Controller
 
     public function edit_form($id){
     	$record = User::with('user_detail')->find($id);
-		//dd($record);
     	return view('admin.users.edit', compact('record'));
     }
 
@@ -46,34 +44,31 @@ class UserManageController extends Controller
 			'last_name' => 'required|string', 
 			'email' => 'required|email|unique:users,email,'.$id,
 			'mobile' => 'required|digits:10',
+                'status' => 'required'
         ], [
                 'name.required' => 'Name is required',
                 'description.required' => 'You can not left description empty. Please add someting to describe category'
             ]);
     	DB::beginTransaction();
     	try {
-            //dd($postData);
         	$users = User::findOrFail($id);
 			$users->first_name = $postData['first_name'];
 			$users->last_name = $postData['last_name'];
 			$users->email = $postData['email'];
+        	$users->status = $postData['status'];
 			$users->user_detail->mobile = $postData['mobile'];
 			$users->user_detail->updated_at = date('Y-m-d H:i:s');
 			$users->updated_at = date('Y-m-d H:i:s');
 			$users->push();
-			DB::commit();
-        	
-        	return redirect('admin/users/list')->with('status', 'success')->with('message', 'User Updated Successfully');
-        	
+			DB::commit();        	
+        	return redirect('admin/users/list')->with('status', 'success')->with('message', 'User Updated Successfully');        	
         } catch ( \Exception $e ) {
             DB::rollback();
-            //dd($e);
             return redirect()->back()->with('status', 'error')->with('message', $e->getMessage());
         }
     }
 
     public function change_password($id){
-		//dd($record);
     	return view('admin.users.password', compact('id'));
     }
 
@@ -88,20 +83,16 @@ class UserManageController extends Controller
             ]);
     	DB::beginTransaction();
     	try {
-            //dd($postData);
         	$data = array(
         		'password' => bcrypt($postData['password']),
         		'updated_at' => date('Y-m-d H:i:s')
-        	);
-        	
+        	);        	
 			$record = User::where('id', $id)->update($data);
-			DB::commit();
-        	
+			DB::commit();        	
         	return redirect('admin/users/list')->with('status', 'success')->with('message', 'User Updated Successfully');
         	
         } catch ( \Exception $e ) {
             DB::rollback();
-            //dd($e);
             return redirect()->back()->with('status', 'error')->with('message', $e->getMessage());
         }
     }

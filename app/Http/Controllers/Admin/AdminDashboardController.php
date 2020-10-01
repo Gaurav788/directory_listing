@@ -18,10 +18,9 @@ use App\User_detail;
 
 class AdminDashboardController extends Controller
 {
-    //
 	public function index(){
 		$users_details = User_detail::where('user_id' , Auth::user()->id)->first();
-		if($users_details != null)//if doesn't exist: create
+		if($users_details != null)//if exist
 		{
 			Session::put('userdetails', $users_details);
 		}
@@ -30,13 +29,12 @@ class AdminDashboardController extends Controller
 	
     public function update_record(Request $request){
 		$validator = Validator::make($request->all(),[
-                'first_name' => 'required',
-                'last_name' => 'required',
-            ], [
-                'first_name.required' => 'First Name cannot be empty',
-                'last_name.required' => 'Last Name cannot be empty',
-            ]);
-			
+            'first_name' => 'required',
+            'last_name' => 'required',
+        ], [
+            'first_name.required' => 'First Name cannot be empty',
+            'last_name.required' => 'Last Name cannot be empty',
+        ]);
         if($validator->fails()){
             if($request->ajax()){
                 return response()->json(["success"=>false,"errors"=>$validator->getMessageBag()->toArray()],200);
@@ -45,29 +43,24 @@ class AdminDashboardController extends Controller
     	DB::beginTransaction();
     	try {
 			$postData = $request->all();
-            //dd($postData);
         	$data = array(
-        			'first_name' => $postData['first_name'],
-        			'last_name' => $postData['last_name'],
-        			'updated_at' => date('Y-m-d H:i:s')
-
+        		'first_name' => $postData['first_name'],
+        		'last_name' => $postData['last_name'],
+        		'updated_at' => date('Y-m-d H:i:s')
         	);
-        	
+        	//If User uploaded profile pictuce
             if($request->hasFile('profile_pic'))
             {
                 $allowedfileExtension=['jpg','png'];
                 $file = $request->file('profile_pic');
                 $extension = $file->getClientOriginalExtension();
                 $check=in_array($extension,$allowedfileExtension);
-                //dd($check);
                 if($check)
                 {
 					$image_resize = Image::make($file)->resize( null, 90, function ( $constraint ) {
                                                                         $constraint->aspectRatio();
                                                                     })->encode( $extension ); 
-					//dd($image_resize);												
 					$users_details = User_detail::where('user_id' , Auth::user()->id)->first();
-					
 					if($users_details == null)//if doesn't exist: create
 					{
 						$users_details = User_detail::create([
@@ -77,7 +70,6 @@ class AdminDashboardController extends Controller
 							'status' => 1,
 							'created_at' => date('Y-m-d H:i:s')
 						]); 
-						//dd($users_details);
 					}
 					else //if exist: update
 					{
@@ -88,17 +80,14 @@ class AdminDashboardController extends Controller
                 }
             }
 			$record = User::where('id', $postData['adminid'])->update($data);
-			DB::commit();
-        	
+			DB::commit();        	
             if ($record > 0) {
                 return response()->json(["success" => true, "msg" => "User details updated Successfully"],200);
             }else{
                 return response()->json(["success" => false, "msg" => "something went wrong"],200);
-            }
-        	
+            }        	
         } catch ( \Exception $e ) {
             DB::rollback();
-            //dd($e);
             throw $e;
             return response()->json(["success"=>false,"msg"=>$e], 200);
         }
@@ -106,21 +95,18 @@ class AdminDashboardController extends Controller
 	
     public function update_password(Request $request){
 		$validator = Validator::make($request->all(),[
-                'oldpassword' => 'required',
-                'newpassword' => 'required',
-            ], [
-                'oldpassword.required' => 'Old Password cannot be empty',
-                'newpassword.required' => 'New Password cannot be empty',
-            ]);
-			
+            'oldpassword' => 'required',
+            'newpassword' => 'required',
+		], [
+			'oldpassword.required' => 'Old Password cannot be empty',
+			'newpassword.required' => 'New Password cannot be empty',
+		]);			
         if($validator->fails()){
             if($request->ajax()){
                 return response()->json(["success"=>false,"errors"=>$validator->getMessageBag()->toArray()],200);
             }
-        }
-		
-		$hashedPassword = Auth::user()->password;
- 
+        }		
+		$hashedPassword = Auth::user()->password; 
 		if (\Hash::check($request->oldpassword , $hashedPassword )) {
 			if (!\Hash::check($request->newpassword , $hashedPassword)) {				
 				$users = User::find(Auth::user()->id);

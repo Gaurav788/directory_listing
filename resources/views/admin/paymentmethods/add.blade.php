@@ -51,7 +51,24 @@
 												</div>
 												
 											
-											</div>						
+											</div>								
+											<div class="row">  
+												<div class="col-lg-4 col-md-6 col-12">
+													<div class="form-group">
+														<label>Status<span class="required">*</span></label>
+														<div class="input-group">
+															<div id="radioBtn" class="btn-group">
+																<a class="btn btn-success btn-sm active {{ old('status') == '1' ? 'active' : 'notActive'}}" data-toggle="status" data-title="1">Enabled</a>
+																<a class="btn btn-danger btn-sm {{ old('status') == '0' ? 'active' : 'notActive'}}" data-toggle="status" data-title="0">Disabled</a>
+															</div>
+															<input type="hidden" name="status" id="status" value="1">
+														</div>
+														@if ($errors->has('status'))
+															<span class="text-danger">{{ $errors->first('status') }}</span>
+														@endif
+													</div>
+												</div>									
+											</div>					
 											<div class="mt-1 mb-1">
 												<div class="text-left d-print-none mt-4">
 													<button type="submit" id="save-paymentmethod-btn" class="btn btn-primary">Save</button>

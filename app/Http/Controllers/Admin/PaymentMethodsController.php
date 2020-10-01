@@ -9,7 +9,6 @@ use DB;
 
 class PaymentMethodsController extends Controller
 {
-    //
     public function list_records(Request $request){
         $data = Payment_method::get();
         return view('admin.paymentmethods.list', compact('data'));
@@ -19,25 +18,23 @@ class PaymentMethodsController extends Controller
     	return view('admin.paymentmethods.add');
     }
 
-
     public function create_record(Request $request){
 		$request->validate([
-                'name' => 'required|unique:payment_methods',
-                'description' => 'required|min:5'
-            ], [
-                'name.required' => 'Name is required',
-                'description.required' => 'You can not left description empty. Please add someting to describe payment method'
-            ]);
+            'name' => 'required|unique:payment_methods',
+            'description' => 'required|min:5',
+            'status' => 'required'
+        ], [
+            'name.required' => 'Name is required',
+            'description.required' => 'You can not left description empty. Please add someting to describe payment method'
+        ]);
     	DB::beginTransaction();
     	try {
         	$postData = $request->all();
-            //dd($postData); 
         	$data = array(
-        			'name' => $postData['name'],
-        			'description' => $postData['description'],
-					'status' => 1,
-        			'created_at' => date('Y-m-d H:i:s')
-
+        		'name' => $postData['name'],
+        		'description' => $postData['description'],
+				'status' => $postData['status'],
+        		'created_at' => date('Y-m-d H:i:s')
         	);
 			$record = Payment_method::create($data);
 			DB::commit();
@@ -46,9 +43,7 @@ class PaymentMethodsController extends Controller
         	}
         } catch ( \Exception $e ) {
             DB::rollback();
-            //dd($e);
             return redirect()->back()->with('status', 'error')->with('message', $e->getMessage());
-            //return ['status' => 400, 'message' => $e->getMessage()];
         }
     }
 
@@ -61,30 +56,26 @@ class PaymentMethodsController extends Controller
         $postData = $request->all();
 		$id =$postData['edit_record_id'];
 		$request->validate([
-                'name' => 'required|unique:payment_methods,name,'.$id,
-                'description' => 'required|min:5'
-            ], [
-                'name.required' => 'Name is required',
-                'description.required' => 'You can not left description empty. Please add someting to describe payment method'
-            ]);
+            'name' => 'required|unique:payment_methods,name,'.$id,
+            'description' => 'required|min:5',
+            'status' => 'required'
+        ], [
+            'name.required' => 'Name is required',
+            'description.required' => 'You can not left description empty. Please add someting to describe payment method'
+        ]);
     	DB::beginTransaction();
     	try {
-            //dd($postData);
         	$data = array(
-        			'name' => $postData['name'],
-        			'description' => $postData['description'],
-        			'updated_at' => date('Y-m-d H:i:s')
-
+        		'name' => $postData['name'],
+        		'description' => $postData['description'],
+				'status' => $postData['status'],
+        		'updated_at' => date('Y-m-d H:i:s')
         	);
-        	
 			$record = Payment_method::where('id', $postData['edit_record_id'])->update($data);
 			DB::commit();
-        	
         	return redirect('admin/paymentmethods/list')->with('status', 'success')->with('message', 'Payment method Updated Successfully');
-        	
         } catch ( \Exception $e ) {
             DB::rollback();
-            //dd($e);
             return redirect()->back()->with('status', 'error')->with('message', $e->getMessage());
         }
     }
@@ -100,12 +91,9 @@ class PaymentMethodsController extends Controller
 
     public function change_status(Request $request){
         $getData = $request->all();
-
         $paymentmethod = Payment_method::find($getData['g']);
         $paymentmethod->status = $getData['s'];
         $paymentmethod->save();
-
         return redirect()->back()->with('status', 'success')->with('message', 'Payment method Status Changed Successfully');
-
     }
 }
