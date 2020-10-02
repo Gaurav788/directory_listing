@@ -21,13 +21,15 @@ class SocialAuthLinkedinController extends Controller
         try {
             $linkdinUser = Socialite::driver('linkedin')->user();
             $existUser = User::where('email',$linkdinUser->email)->first();
+			
             if($existUser) {
                 Auth::loginUsingId($existUser->id);
             }
             else {
                 $user = new User;
                 $user->role_id = 3;
-                $user->first_name = $linkdinUser->name;
+                $user->first_name = $linkdinUser->first_name;
+                $user->last_name = $linkdinUser->last_name;
                 $user->email = $linkdinUser->email;
                 $user->social_type = 'Linkdin';
                 $user->social_id = $linkdinUser->id;

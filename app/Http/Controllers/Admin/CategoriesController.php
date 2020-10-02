@@ -10,7 +10,7 @@ use DB;
 class CategoriesController extends Controller
 {
     public function list_records(Request $request){
-        $category = Category::get();
+        $category = Category::with('parent')->get();
         return view('admin.category.list', compact('category'));
     }
 

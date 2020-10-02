@@ -25,7 +25,7 @@ class ApiAuthController extends Controller
 		$postArray['password'] = bcrypt($postArray['password']); 
 		$postArray['status'] = 1; 
 		$postArray['role_id'] = 2; 
-		$postArray['social_type'] = 'website'; 
+		$postArray['social_type'] = 'Website'; 
 		$postArray['social_id'] = 0; 
 		$postArray['created_at'] = date('Y-m-d H:i:s'); 
 		$user = User::create($postArray); 
@@ -36,7 +36,7 @@ class ApiAuthController extends Controller
         	'created_at' => date('Y-m-d H:i:s')
         );
 		User_detail::create($user_detail);
-        return response(['status' => 'success',  'user' => $user, 'access_token' => $accessToken]);
+        return response(['status' => 'success', 'user' => $user, 'access_token' => $accessToken]);
 	}
 	public function login (Request $request) {
 		$loginData = $request->validate([

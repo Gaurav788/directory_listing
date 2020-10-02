@@ -84,7 +84,7 @@
 											<div class="mt-1 mb-1">
 												<div class="text-left d-print-none mt-4">
 													<button type="submit" id="save-category-btn" class="btn btn-primary">Update</button>
-													<a href="{{route('subcategories.list')}}" class="btn btn-light">Cancel</a>
+													<a href="{{route('users.list')}}" class="btn btn-light">Cancel</a>
 												</div>
 												
 											</div>

@@ -55,16 +55,6 @@ Route::post('admin/category/update', 'Admin\CategoriesController@update_record')
 Route::get('admin/category/status/update', 'Admin\CategoriesController@change_status')->name('category.status')->middleware('admin');
 Route::post('admin/category/del', 'Admin\CategoriesController@del_record')->name('category.del')->middleware('admin');
 
-//Subcategories Routes
-
-Route::get('admin/subcategories/list', 'Admin\SubCategoriesController@list_records')->name('subcategories.list')->middleware('admin');
-Route::get('admin/subcategory/add', 'Admin\SubCategoriesController@add_form')->name('subcategory.add')->middleware('admin');
-Route::post('admin/subcategory/create', 'Admin\SubCategoriesController@create_record')->name('subcategory.create')->middleware('admin');
-Route::get('admin/subcategory/edit/{id}', 'Admin\SubCategoriesController@edit_form')->name('subcategory.edit')->middleware('admin');
-Route::post('admin/subcategory/update', 'Admin\SubCategoriesController@update_record')->name('subcategory.update')->middleware('admin');
-Route::get('admin/subcategory/status/update', 'Admin\SubCategoriesController@change_status')->name('subcategory.status')->middleware('admin');
-Route::post('admin/subcategory/del', 'Admin\SubCategoriesController@del_record')->name('subcategory.del')->middleware('admin');
-
 //Currencies Routes
 
 Route::get('admin/currencies/list', 'Admin\CurrencyController@list_records')->name('currencies.list')->middleware('admin');

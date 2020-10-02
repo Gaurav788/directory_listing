@@ -19,7 +19,7 @@ class UsersTableSeeder extends Seeder
 			'first_name' => 'Gaurav',
 			'last_name' => 'Chauhan',
 			'email' => 'admin@gmail.com',
-			'password' => bcrypt('pass@dmin'),
+			'password' => bcrypt('pass@admin'),
 			'social_type' => 'Website',
 			'social_id' => 0,
 			'status' => 1,

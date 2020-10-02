@@ -25,4 +25,12 @@ class User_detail extends Model
 	{
 		return $this->belongsTo(User::class);
 	}
+	public function country()
+	{
+	   return $this->hasOne(Country::class);
+	}
+	public function state()
+	{
+	   return $this->hasOne(State::class);
+	}
 }

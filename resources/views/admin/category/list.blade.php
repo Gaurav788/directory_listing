@@ -31,6 +31,7 @@
 								<tr>
 									<th>S.No</th>
 									<th>Name</th>
+									<th>Parent</th>
 									<th>Description</th>
 									<th>Status</th>
 									<th>Date</th>
@@ -43,6 +44,7 @@
 								<tr>
 									<td>{{$i}}</td>
 									<td>{{$row->name}}</td>
+									<td>{{ $row->parent_id == 0 ? 'Main' : $row->parent->name }}</td>
 									<td>{{strip_tags($row->description)}}</td>
 									<td>
 									@if($row->status == 0)
@@ -66,6 +68,7 @@
 								<tr>
 									<th>S.No</th>
 									<th>Name</th>
+									<th>Parent</th>
 									<th>Description</th>
 									<th>Status</th>
 									<th>Date</th>

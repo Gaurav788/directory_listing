@@ -43,12 +43,12 @@ class UserManageController extends Controller
 			'first_name' => 'required|string',  
 			'last_name' => 'required|string', 
 			'email' => 'required|email|unique:users,email,'.$id,
-			'mobile' => 'required|digits:10',
-                'status' => 'required'
+			'mobile' => 'required|digits:10|unique:user_details,mobile,'.$id.',user_id',
+            'status' => 'required'
         ], [
-                'name.required' => 'Name is required',
-                'description.required' => 'You can not left description empty. Please add someting to describe category'
-            ]);
+            'name.required' => 'Name is required',
+            'description.required' => 'You can not left description empty. Please add someting to describe category'
+        ]);
     	DB::beginTransaction();
     	try {
         	$users = User::findOrFail($id);
@@ -78,9 +78,9 @@ class UserManageController extends Controller
 		$request->validate([
 			'password' => 'nullable|required_with:password_confirmation|string|confirmed', 
         ], [
-                'password.required' => 'Password is required',
-                'password.confirmed' => 'Confirmed Password not matched with password'
-            ]);
+            'password.required' => 'Password is required',
+            'password.confirmed' => 'Confirmed Password not matched with password'
+        ]);
     	DB::beginTransaction();
     	try {
         	$data = array(

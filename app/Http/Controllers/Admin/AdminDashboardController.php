@@ -18,7 +18,11 @@ use App\User_detail;
 
 class AdminDashboardController extends Controller
 {
-	public function index(){
+	
+    public function __construct()
+    {
+	}
+	public function index(){		
 		$users_details = User_detail::where('user_id' , Auth::user()->id)->first();
 		if($users_details != null)//if exist
 		{
@@ -49,20 +53,17 @@ class AdminDashboardController extends Controller
         		'updated_at' => date('Y-m-d H:i:s')
         	);
         	//If User uploaded profile pictuce
-            if($request->hasFile('profile_pic'))
-            {
+            if($request->hasFile('profile_pic')) {
                 $allowedfileExtension=['jpg','png'];
                 $file = $request->file('profile_pic');
                 $extension = $file->getClientOriginalExtension();
                 $check=in_array($extension,$allowedfileExtension);
-                if($check)
-                {
+                if($check) {
 					$image_resize = Image::make($file)->resize( null, 90, function ( $constraint ) {
-                                                                        $constraint->aspectRatio();
-                                                                    })->encode( $extension ); 
+						$constraint->aspectRatio();
+					})->encode( $extension ); 
 					$users_details = User_detail::where('user_id' , Auth::user()->id)->first();
-					if($users_details == null)//if doesn't exist: create
-					{
+					if($users_details == null) {
 						$users_details = User_detail::create([
 							'user_id' => Auth::user()->id,
 							'profile_picture'=>$image_resize,
@@ -70,9 +71,7 @@ class AdminDashboardController extends Controller
 							'status' => 1,
 							'created_at' => date('Y-m-d H:i:s')
 						]); 
-					}
-					else //if exist: update
-					{
+					} else {
 						$users_details->update(['profile_picture'=>$image_resize, 'imagetype' => $extension, 'updated_at' => date('Y-m-d H:i:s')]);
 					}
                 } else {
@@ -82,8 +81,13 @@ class AdminDashboardController extends Controller
 			$record = User::where('id', $postData['adminid'])->update($data);
 			DB::commit();        	
             if ($record > 0) {
+				$users_details = User_detail::where('user_id' , Auth::user()->id)->first();
+				if($users_details != null)
+				{
+					Session::put('userdetails', $users_details);
+				}
                 return response()->json(["success" => true, "msg" => "User details updated Successfully"],200);
-            }else{
+            } else{
                 return response()->json(["success" => false, "msg" => "something went wrong"],200);
             }        	
         } catch ( \Exception $e ) {
@@ -111,14 +115,12 @@ class AdminDashboardController extends Controller
 			if (!\Hash::check($request->newpassword , $hashedPassword)) {				
 				$users = User::find(Auth::user()->id);
 				$users->password = bcrypt($request->newpassword);
-				User::where( 'id' , Auth::user()->id)->update( array( 'password' =>  $users->password));
+				$users->save();
 				return response()->json(["success"=>true,"msg"=>"User password updated Successfully"],200);
-            }
-            else{                  
+            } else{                  
                 return response()->json(["success"=>false,"msg"=>"new password can not be the old password!"],200);
             }
-        }
-        else{
+        } else{
 			return response()->json(["success"=>false,"msg"=>'old password doesnt matched'], 200);
         }
  
